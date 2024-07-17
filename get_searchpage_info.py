@@ -18,7 +18,7 @@ driver = webdriver.Chrome(options=options)
 
 driver.get(url)
 a_elements = driver.find_elements(By.XPATH, '//*[@id="search-result"]/a')
-
+print(a_elements)
 # 遍歷每個 a 元素
 for index, a_element in enumerate(a_elements, 1):
     href = a_element.get_attribute('href')
