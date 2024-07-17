@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class StringHelper:
     @staticmethod
-    def reverse_string(page, brand, model):
+    def get_page_info(page, brand, model):
         start_time = time.time()
         options = Options()
         options.add_argument('--headless')  # 啟用 Headless 模式
@@ -47,9 +47,24 @@ class StringHelper:
         return car_url, car_locations, car_views
 
     @staticmethod
-    def count_vowels(text):
-        vowels = 'aeiouAEIOU'
-        return sum(1 for char in text if char in vowels)
+    def scan_all_pages(brand=None, model=None):
+        page = 1
+        all_car_url, all_car_locations, all_car_views = [], [], []
+        start_time = time.time()
+        while page < 2:
+            result = StringHelper.get_page_info(page, brand, model)
+            if not result:
+                break
+            car_url, car_locations, car_views = result
+            all_car_url.extend(car_url)
+            all_car_locations.extend(car_locations)
+            all_car_views.extend(car_views)
+            page += 1
+            time.sleep(1)
+        end_time = time.time()
+        print(f'totall time is {start_time - end_time}')
+
+        return all_car_url, all_car_locations, all_car_views
 
     @staticmethod
     def to_title_case(text):
