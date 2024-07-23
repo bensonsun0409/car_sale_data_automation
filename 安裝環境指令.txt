@@ -3,3 +3,12 @@ pip install -r requirements.txt
 
 若自己有更新library則要進行更新requirements.txt
 pip freeze > requirements.txt
+
+
+mysql 載點
+https://downloads.mysql.com/archives/installer/
+git config --global user.name "janet850305"
+git config --global user.email janet850305@gmail.com
+ssh-keygen -t rsa -C "janet850305@gmail.com"
+激活虛擬環境
+.\.venv\Scripts\activate
