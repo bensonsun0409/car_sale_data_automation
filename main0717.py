@@ -19,13 +19,26 @@ def main():
     all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('audi')
 
     save_to_csv(all_car_url, all_car_locations, all_car_views)
-    url = 'https://auto.8891.com.tw/usedauto-infos-3976803.html?display__sale_code=3010013&flow_id=de95bd2f-ab18-4caa-aa5b-dce5773f7ea3'
+    print(type(all_car_url))
+    print(all_car_url)
 
-    scraper = CarDataScraper()
-    car_data = scraper.scrape_car_data(url)
-    scraper.close()
+    # scraper = CarDataScraper()
+    all_car_data = []
 
-    print(car_data)
+    for url in all_car_url:
+        scraper = CarDataScraper()
+        car_data = scraper.scrape_car_data(url)
+        all_car_data.append(car_data)
+        print(f"Processed URL: {url}")
+        print(f"Car Data: {car_data}")
+
+        scraper.close()
+
+    print("All car data collected:")
+    for i, car_data in enumerate(all_car_data, 1):
+        print(f"Car {i}:")
+        print(car_data)
+        print("-" * 50)
 
 if __name__ == "__main__":
     main()
