@@ -63,57 +63,60 @@ url = f'https://auto.8891.com.tw/?'
 # print(f"df")
 
 url = f'https://auto.8891.com.tw/usedauto-infos-3976803.html?display__sale_code=3010013&flow_id=de95bd2f-ab18-4caa-aa5b-dce5773f7ea3'
+url2= f'https://sofu.8891.com.tw/onSale/S3980152.html?display__sale_code=3010013&flow_id=e28e5f44-6c30-4305-ac37-3f8bfc6d90cb'
 driver = webdriver.Chrome()
 # driver.maximize_window()
-driver.get(url)
+driver.get(url2)
 # brand = driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div/a[3]').text
 input_string= driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div').text  
 
 match = re.search(r'中古車 > (.*?) > .*?編號：(S\d+)', input_string)
 
-if match:
-    brand = match.group(1) #品牌
-    car_id = match.group(2) #車ID
-    print(f"Car Model: {brand}")
-    print(f"Car ID: {car_id}")
-else:
-    print("No match found")
+# if match:
+#     brand = match.group(1) #品牌
+#     car_id = match.group(2) #車ID
+#     print(f"Car Model: {brand}")
+#     print(f"Car ID: {car_id}")
+# else:
+#     print("No match found")
 
 
-price=driver.find_element(By.ID,'price').text  #價錢
-verify=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/div[3]/ul/li[2]/div[1]').text #是否驗證
-if verify=="暫未驗證":
-    verify_tag="N"
-else:
-    verify_tag="Y"
-print(price)
-print(verify_tag)
-long=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/ul/li[1]/span[1]').text #里程數
-print(long)
-year=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/ul/li[2]/span[1]').text #年齡
-color=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/ul/li[3]/span[1]').text #顏色
+# price=driver.find_element(By.ID,'price').text  #價錢
 
-print(year)
-print(color)
-video=""
-try:
-    driver.find_element(By.ID,'vjs_video_3')
-    video="Y"
-except:
-    video="N"
-print(f'影片看車:{video}')
+# try:
+#     verify = self.driver.find_element(By.XPATH,
+#                                         '//*[@id="main-box"]/div[3]/div[2]/div[3]/ul/li[2]/div[1]').text
+#     car_data['verify_tag'] = 'Y' if verify != "暫未驗證" else 'N'
+# except NoSuchElementException:
+#     car_data['verify_tag'] = "Not found"
+# print(price)
+# print(verify_tag)
+# long=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/ul/li[1]/span[1]').text #里程數
+# print(long)
+# year=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/ul/li[2]/span[1]').text #年齡
+# color=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/ul/li[3]/span[1]').text #顏色
 
-ask=driver.find_element(By.XPATH,'//*[@id="new-chat-wrapper"]/div/span').text  #詢問人數
-match=re.search(r'\d+',ask)
-if match:
-    ask_num=match.group(0)
-    print(ask_num)
-else:
-    print("No match found for ask")
+# print(year)
+# print(color)
+# video=""
+# try:
+#     driver.find_element(By.ID,'vjs_video_3')
+#     video="Y"
+# except:
+#     video="N"
+# print(f'影片看車:{video}')
+
+# ask=driver.find_element(By.XPATH,'//*[@id="new-chat-wrapper"]/div/span').text  #詢問人數
+# match=re.search(r'\d+',ask)
+# if match:
+#     ask_num=match.group(0)
+#     print(ask_num)
+# else:
+#     print("No match found for ask")
 
 
-car_detail_location=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/a/span').text  #車子所在地
-print(car_detail_location)
+# car_detail_location=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/a/span').text  #車子所在地
+# print(car_detail_location)
 driver.execute_script("window.scrollTo(0, 1000);") #因車行資料須下滑才會load，所以加入這行，如果
 
 seller=driver.find_element(By.ID,'tpl_show_market_section') #車行所有資料
@@ -125,9 +128,13 @@ lines = seller_text.split('\n')
 # 打印第一行文本内容
 if lines:
     first_line = lines[0]
+    if first_line=="8891嚴選商家實車 實況 實價":
+        first_line=lines[1]
     print(f"{first_line}")
 else:
     print("No text found in the section.")
+
+
 
 car_equip=driver.find_element(By.ID,'car-equip') #在car_equip下找出有裝的設備
 equipment=car_equip.find_elements(By.CLASS_NAME,'has')
