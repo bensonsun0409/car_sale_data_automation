@@ -151,12 +151,25 @@ class CarDataScraper:
                 car_data['seller_info'] = None
 
             # 提取車輛設備
+            all_equipment = [
+                '胎壓偵測', '動態穩定系統', '防盜系統', 'keyless免鑰系統', '循跡系統', '中控鎖', '剎車輔助系統',
+                '兒童安全椅固定裝置', 'ABS防鎖死', '安全氣囊', '定速系統', 'LED頭燈', '倒車顯影系統', '衛星導航',
+                '多功能方向盤', '倒車雷達', '恆溫空調', '自動停車系統','電動天窗', '真皮/皮革座椅'
+            ]
+            equipment_dict = {equipment: 'N' for equipment in all_equipment}
+
+            # 將在列表中的設備標記為 'Y'
             try:
                 car_equip = self.driver.find_element(By.ID, 'car-equip')
-                equipment = car_equip.find_elements(By.CLASS_NAME, 'has')
-                car_data['equipment'] = [item.text for item in equipment if item.text]
+                equipments = car_equip.find_elements(By.CLASS_NAME, 'has')
+                for e in equipments:
+                    this_equip=e.text
+                    if this_equip in equipment_dict:
+                        equipment_dict[this_equip] = 'Y'
             except NoSuchElementException:
-                car_data['equipment'] = None
+                print("Equipment not found")
+            car_data.update(equipment_dict)
+
 
             end_time = time.time()
             # car_data['scrape_time'] = end_time - start_time
