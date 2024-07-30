@@ -89,7 +89,11 @@ class CarDataScraper:
                 seller = self.driver.find_element(By.ID, 'tpl_show_market_section')
                 time.sleep(1)
                 seller_text = seller.text.split('\n')
-                car_data['seller_info'] = seller_text[0] if seller_text else "Not found"
+                if seller_text:
+                    if seller_text[0] == "8891嚴選商家實車 實況 實價":
+                        car_data['seller_info'] = seller_text[1]
+                    else:
+                        car_data['seller_info'] = seller_text[0]
             except NoSuchElementException:
                 car_data['seller_info'] = "Not found"
 

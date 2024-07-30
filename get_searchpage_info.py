@@ -1,21 +1,78 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
-import time
+from DownloadHelper.MainPageHelper import StringHelper
+from DownloadHelper.CarPageHelper import CarDataScraper
 import pandas as pd
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import pandas as pd
-from sqlalchemy import create_engine
-import re
-engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
-start_time = time.time()
-options = Options()
-options.add_argument('--headless')  # 啟用 Headless 模式
-options.add_argument('--disable-gpu')  # 禁用 GPU 加速，有助於在某些系統上避免錯誤
-url = f'https://auto.8891.com.tw/?'
+
+
+def save_to_csv(car_url, car_locations, car_views,car_data):
+    df1 = pd.DataFrame({
+        'Car Url': car_url,
+        'Location': car_locations,
+        'Views': car_views,
+        
+    })
+    df2 = pd.DataFrame(car_data)
+    result = pd.concat([df1, df2], axis=1)
+    result.to_csv('car_info2.csv', index=False, encoding='utf-8-sig')
+
+
+# 使用StringHelper類的方法
+def main():
+    helper = StringHelper()
+    # 使用反轉字串方法
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('isuzu')
+
+    # save_to_csv(all_car_url, all_car_locations, all_car_views)
+    print(type(all_car_url))
+    print(all_car_url)
+
+    # scraper = CarDataScraper()
+    
+    all_car_data = []
+
+    for url in all_car_url:
+        scraper = CarDataScraper()
+        car_data = scraper.scrape_car_data(url)
+        all_car_data.append(car_data)
+        print(f"Processed URL: {url}")
+        print(f"Car Data: {car_data}")
+
+        scraper.close()
+
+    print("All car data collected:")
+    save_to_csv(all_car_url, all_car_locations, all_car_views, all_car_data)
+    
+    for i, car_data in enumerate(all_car_data, 1):
+        print(f"Car {i}:")
+        print(car_data)
+        print("-" * 50)
+        
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+# from selenium import webdriver
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.chrome.options import Options
+# import time
+# import pandas as pd
+# from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# import pandas as pd
+# from sqlalchemy import create_engine
+# import re
+# engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
+# start_time = time.time()
+# options = Options()
+# options.add_argument('--headless')  # 啟用 Headless 模式
+# options.add_argument('--disable-gpu')  # 禁用 GPU 加速，有助於在某些系統上避免錯誤
+# url = f'https://auto.8891.com.tw/?'
+
+
 
 # driver = webdriver.Chrome(options=options)
 
@@ -62,15 +119,15 @@ url = f'https://auto.8891.com.tw/?'
 # download_time = end_time - start_time
 # print(f"df")
 
-url = f'https://auto.8891.com.tw/usedauto-infos-3976803.html?display__sale_code=3010013&flow_id=de95bd2f-ab18-4caa-aa5b-dce5773f7ea3'
-url2= f'https://sofu.8891.com.tw/onSale/S3980152.html?display__sale_code=3010013&flow_id=e28e5f44-6c30-4305-ac37-3f8bfc6d90cb'
-driver = webdriver.Chrome()
-# driver.maximize_window()
-driver.get(url2)
-# brand = driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div/a[3]').text
-input_string= driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div').text  
+# url = f'https://auto.8891.com.tw/usedauto-infos-3976803.html?display__sale_code=3010013&flow_id=de95bd2f-ab18-4caa-aa5b-dce5773f7ea3'
+# url2= f'https://sofu.8891.com.tw/onSale/S3980152.html?display__sale_code=3010013&flow_id=e28e5f44-6c30-4305-ac37-3f8bfc6d90cb'
+# driver = webdriver.Chrome()
+# # driver.maximize_window()
+# driver.get(url2)
+# # brand = driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div/a[3]').text
+# input_string= driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div').text  
 
-match = re.search(r'中古車 > (.*?) > .*?編號：(S\d+)', input_string)
+# match = re.search(r'中古車 > (.*?) > .*?編號：(S\d+)', input_string)
 
 # if match:
 #     brand = match.group(1) #品牌
@@ -117,31 +174,31 @@ match = re.search(r'中古車 > (.*?) > .*?編號：(S\d+)', input_string)
 
 # car_detail_location=driver.find_element(By.XPATH,'//*[@id="main-box"]/div[3]/div[2]/a/span').text  #車子所在地
 # print(car_detail_location)
-driver.execute_script("window.scrollTo(0, 1000);") #因車行資料須下滑才會load，所以加入這行，如果
+# driver.execute_script("window.scrollTo(0, 1000);") #因車行資料須下滑才會load，所以加入這行，如果
 
-seller=driver.find_element(By.ID,'tpl_show_market_section') #車行所有資料
+# seller=driver.find_element(By.ID,'tpl_show_market_section') #車行所有資料
 
-time.sleep(1)
-seller_text=seller.text
-lines = seller_text.split('\n')
+# time.sleep(1)
+# seller_text=seller.text
+# lines = seller_text.split('\n')
 
-# 打印第一行文本内容
-if lines:
-    first_line = lines[0]
-    if first_line=="8891嚴選商家實車 實況 實價":
-        first_line=lines[1]
-    print(f"{first_line}")
-else:
-    print("No text found in the section.")
+# # 打印第一行文本内容
+# if lines:
+#     first_line = lines[0]
+#     if first_line=="8891嚴選商家實車 實況 實價":
+#         first_line=lines[1]
+#     print(f"{first_line}")
+# else:
+#     print("No text found in the section.")
 
 
 
-car_equip=driver.find_element(By.ID,'car-equip') #在car_equip下找出有裝的設備
-equipment=car_equip.find_elements(By.CLASS_NAME,'has')
-for i in equipment:
-    if i==0:
-        continue
-    print(i.text)
-end_time=time.time()
-print(f'{end_time-start_time}s')
+# car_equip=driver.find_element(By.ID,'car-equip') #在car_equip下找出有裝的設備
+# equipment=car_equip.find_elements(By.CLASS_NAME,'has')
+# for i in equipment:
+#     if i==0:
+#         continue
+#     print(i.text)
+# end_time=time.time()
+# print(f'{end_time-start_time}s')
 
