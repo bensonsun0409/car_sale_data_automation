@@ -40,7 +40,7 @@ class StringHelper:
                     print(f"  位置: {location.text}")
                     print(f"  瀏覽量: {views.text}")
                     print()
-                    car_views.append(views.text)
+                    car_views.append(views.text[:-3])
                     car_locations.append(location.text)
                     car_url.append(href)
                 except NoSuchElementException:

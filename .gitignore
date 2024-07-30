@@ -1,0 +1,4 @@
+build/
+__pycache__/
+dist/
+get_searchpage_info.spec

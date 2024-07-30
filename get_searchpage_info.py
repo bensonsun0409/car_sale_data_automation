@@ -1,25 +1,39 @@
 from DownloadHelper.MainPageHelper import StringHelper
 from DownloadHelper.CarPageHelper import CarDataScraper
 import pandas as pd
-
-
+from sqlalchemy import create_engine
+import traceback
 def save_to_csv(car_url, car_locations, car_views,car_data):
     df1 = pd.DataFrame({
-        'Car Url': car_url,
-        'Location': car_locations,
-        'Views': car_views,
+        'url': car_url,
+        'location': car_locations,
+        'views': car_views,
         
     })
     df2 = pd.DataFrame(car_data)
     result = pd.concat([df1, df2], axis=1)
     result.to_csv('car_info2.csv', index=False, encoding='utf-8-sig')
 
+def save_to_sql(df):
+    engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
+    try:
+        df.to_sql(name='car_data', con=engine, if_exists='append', index=False) 
+    except:
+        print("sql儲存失敗")
+        traceback.print_exc()
 
-# 使用StringHelper類的方法
+# car_data = [
+#     {'id':1,'view':10},
+#     {'id':2,'view':0},
+#     {'id':3,'view':None}
+# ]
+# mydf=pd.DataFrame(car_data)
+# save_to_sql(mydf)
+# # 使用StringHelper類的方法
 def main():
     helper = StringHelper()
     # 使用反轉字串方法
-    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('isuzu')
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('ford','mondeo-hybrid')
 
     # save_to_csv(all_car_url, all_car_locations, all_car_views)
     print(type(all_car_url))
@@ -39,12 +53,20 @@ def main():
         scraper.close()
 
     print("All car data collected:")
-    save_to_csv(all_car_url, all_car_locations, all_car_views, all_car_data)
+    df1 = pd.DataFrame({
+        'url': all_car_url,
+        'location': all_car_locations,
+        'views': all_car_views,
+    })
+    df2 = pd.DataFrame(all_car_data)
+    result = pd.concat([df1, df2], axis=1)
+    # result.to_csv('car_info2.csv', index=False, encoding='utf-8-sig')
+    save_to_sql(result)
     
-    for i, car_data in enumerate(all_car_data, 1):
-        print(f"Car {i}:")
-        print(car_data)
-        print("-" * 50)
+    # for i, car_data in enumerate(all_car_data, 1):
+    #     print(f"Car {i}:")
+    #     print(car_data)
+    #     print("-" * 50)
         
 
 if __name__ == "__main__":
