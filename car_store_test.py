@@ -72,30 +72,66 @@ from DownloadHelper.CarDealerScraper import CarDealerScraper
 
 def main():
     url = "https://www.8891.com.tw/findBuz-index.html"
+    # url = "https://www.8891.com.tw/findBuz-index.html?firstRow=30&totalRows=2199&"
     scraper = CarDealerScraper()
-    titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
+    total_data = scraper.total_counts(url)
+    print(total_data)
+    current_value = 0
+    # while current_value + 30 < total_data:
+    #     current_value += 30
+    #     print(current_value)
+    # 在循環開始前初始化列表
+    all_titles = []
+    all_links = []
+    all_ratings = []
+    all_rating_counts = []
+    all_in_stocks = []
+    all_in_stores = []
+    all_view_counts = []
+    if total_data % 30 == 0:
+        while current_value < total_data:
+            print('here')
+            print(current_value)
+            current_value += 30
+    else:
+        while current_value <= total_data:
+            print(current_value)
+            url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}&'
+            titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
 
+            # 將新的數據添加到對應的列表中
+            all_titles.extend(titles)
+            all_links.extend(links)
+            all_ratings.extend(ratings)
+            all_rating_counts.extend(rating_counts)
+            all_in_stocks.extend(in_stocks)
+            all_in_stores.extend(in_stores)
+            all_view_counts.extend(view_counts)
+
+            current_value += 30
+    # titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
+    #
     # 打印結果
-    for i in range(len(titles)):
-        print(f"標題: {titles[i]}")
-        print(f"連結: {links[i]}")
-        print(f"評分: {ratings[i]}")
-        print(f"評價數量: {rating_counts[i]}")
-        print(f"在庫數量: {in_stocks[i]}")
-        print(f"在店數量: {in_stores[i]}")
-        print(f"瀏覽數: {view_counts[i]}")
+    for i in range(len(all_titles)):
+        print(f"標題: {all_titles[i]}")
+        print(f"連結: {all_links[i]}")
+        print(f"評分: {all_ratings[i]}")
+        print(f"評價數量: {all_rating_counts[i]}")
+        print(f"在庫數量: {all_in_stocks[i]}")
+        print(f"在店數量: {all_in_stores[i]}")
+        print(f"瀏覽數: {all_view_counts[i]}")
         print("------------------------")
 
     # 您可以在這裡進行更多的數據處理
     # 例如：計算平均評分
-    valid_ratings = [float(r) for r in ratings if r is not None]
+    valid_ratings = [float(r) for r in all_ratings if r is not None]
     avg_rating = sum(valid_ratings) / len(valid_ratings) if valid_ratings else 0
     print(f"平均評分: {avg_rating:.2f}")
 
     # 找出瀏覽數最高的經銷商
-    max_view_count = max([int(vc) for vc in view_counts if vc is not None], default=0)
-    max_view_index = view_counts.index(str(max_view_count))
-    print(f"瀏覽數最高的經銷商: {titles[max_view_index]} (瀏覽數: {max_view_count})")
+    max_view_count = max([int(vc) for vc in all_view_counts if vc is not None], default=0)
+    max_view_index = all_view_counts.index(str(max_view_count))
+    print(f"瀏覽數最高的經銷商: {all_titles[max_view_index]} (瀏覽數: {max_view_count})")
 
 
 if __name__ == "__main__":

@@ -95,3 +95,16 @@ class CarDealerScraper:
     def _parse_view_count(self, item):
         view_count_span = item.find('span', style="color: #333;")
         return view_count_span.text if view_count_span else None
+
+    def total_counts(self, url):
+        response = self.session.get(url)
+
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            total_data = soup.find('span', style="color:#C00;")
+
+            return int(total_data.text)
+
+        else:
+            print("無法獲取網頁內容")
+            return 0
