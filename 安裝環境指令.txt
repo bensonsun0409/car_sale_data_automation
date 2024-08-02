@@ -1,3 +1,5 @@
+啟動虛擬環境
+.venv\Scripts\activate
 每次pull下來之後若有新的library則使用下方指令
 pip install -r requirements.txt
 

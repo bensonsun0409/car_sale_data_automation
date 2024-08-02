@@ -1,0 +1,227 @@
+2024-08-02 17:02:59,150 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-02 17:02:59,151 INFO: [33mPress CTRL+C to quit[0m
+2024-08-02 17:03:04,486 INFO: 127.0.0.1 - - [02/Aug/2024 17:03:04] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:03:04,744 ERROR: Error in handle_queries: (1525, "Incorrect DATE value: ''")
+2024-08-02 17:03:04,744 INFO: 127.0.0.1 - - [02/Aug/2024 17:03:04] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:03:23,845 INFO: 127.0.0.1 - - [02/Aug/2024 17:03:23] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:03:24,437 INFO: 127.0.0.1 - - [02/Aug/2024 17:03:24] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:03:51,439 INFO: 127.0.0.1 - - [02/Aug/2024 17:03:51] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:03:52,002 INFO: 127.0.0.1 - - [02/Aug/2024 17:03:52] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:04:21,963 INFO: 127.0.0.1 - - [02/Aug/2024 17:04:21] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:04:22,278 ERROR: Error in handle_queries: (1054, "Unknown column 'productionYear' in 'where clause'")
+2024-08-02 17:04:22,279 INFO: 127.0.0.1 - - [02/Aug/2024 17:04:22] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:31:23,544 INFO: 127.0.0.1 - - [02/Aug/2024 17:31:23] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:31:24,043 INFO: 127.0.0.1 - - [02/Aug/2024 17:31:24] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:31:30,335 INFO: 127.0.0.1 - - [02/Aug/2024 17:31:30] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:31:30,877 INFO: 127.0.0.1 - - [02/Aug/2024 17:31:30] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:31:43,575 INFO: 127.0.0.1 - - [02/Aug/2024 17:31:43] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:31:44,103 INFO: 127.0.0.1 - - [02/Aug/2024 17:31:44] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:53:24,186 INFO: 127.0.0.1 - - [02/Aug/2024 17:53:24] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:53:24,444 ERROR: Error in handle_queries: (1525, "Incorrect DATE value: ''")
+2024-08-02 17:53:24,444 INFO: 127.0.0.1 - - [02/Aug/2024 17:53:24] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:53:43,663 INFO: 127.0.0.1 - - [02/Aug/2024 17:53:43] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:53:44,220 INFO: 127.0.0.1 - - [02/Aug/2024 17:53:44] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:53:44,606 INFO: 127.0.0.1 - - [02/Aug/2024 17:53:44] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:53:53,945 INFO: 127.0.0.1 - - [02/Aug/2024 17:53:53] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:53:54,486 INFO: 127.0.0.1 - - [02/Aug/2024 17:53:54] "POST /search HTTP/1.1" 200 -
+2024-08-02 17:54:04,071 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-02 17:54:04,071 INFO: [33mPress CTRL+C to quit[0m
+2024-08-02 17:54:24,179 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:24] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:54:24,426 ERROR: Error processing average_price: (1525, "Incorrect DATE value: ''")
+2024-08-02 17:54:24,426 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:24] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 17:54:24,464 ERROR: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 363, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 324, in execute
+    application_iter = app(environ, start_response)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1489, in wsgi_app
+    ctx.pop(error)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 426, in pop
+    app_ctx.pop(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 262, in pop
+    self.app.do_teardown_appcontext(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1344, in do_teardown_appcontext
+    self.ensure_sync(func)(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_mysqldb\__init__.py", line 114, in teardown
+    ctx.mysql_db.close()
+MySQLdb.OperationalError: (2006, '')
+2024-08-02 17:54:33,079 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:33] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:54:33,536 ERROR: Error processing listing_count: (2006, '')
+2024-08-02 17:54:33,537 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:33] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 17:54:33,541 ERROR: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 363, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 324, in execute
+    application_iter = app(environ, start_response)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1489, in wsgi_app
+    ctx.pop(error)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 426, in pop
+    app_ctx.pop(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 262, in pop
+    self.app.do_teardown_appcontext(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1344, in do_teardown_appcontext
+    self.ensure_sync(func)(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_mysqldb\__init__.py", line 114, in teardown
+    ctx.mysql_db.close()
+MySQLdb.OperationalError: (2006, '')
+2024-08-02 17:54:47,132 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:47] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:54:47,556 ERROR: Error processing listing_count: (2006, '')
+2024-08-02 17:54:47,556 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:47] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 17:54:47,559 ERROR: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 363, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 324, in execute
+    application_iter = app(environ, start_response)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1489, in wsgi_app
+    ctx.pop(error)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 426, in pop
+    app_ctx.pop(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 262, in pop
+    self.app.do_teardown_appcontext(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1344, in do_teardown_appcontext
+    self.ensure_sync(func)(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_mysqldb\__init__.py", line 114, in teardown
+    ctx.mysql_db.close()
+MySQLdb.OperationalError: (2006, '')
+2024-08-02 17:54:55,601 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:55] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 17:54:56,012 ERROR: Error processing listing_count: (2006, '')
+2024-08-02 17:54:56,013 INFO: 127.0.0.1 - - [02/Aug/2024 17:54:56] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 17:54:56,017 ERROR: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 363, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 324, in execute
+    application_iter = app(environ, start_response)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1489, in wsgi_app
+    ctx.pop(error)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 426, in pop
+    app_ctx.pop(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 262, in pop
+    self.app.do_teardown_appcontext(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1344, in do_teardown_appcontext
+    self.ensure_sync(func)(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_mysqldb\__init__.py", line 114, in teardown
+    ctx.mysql_db.close()
+MySQLdb.OperationalError: (2006, '')
+2024-08-02 18:07:40,976 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-02 18:07:40,977 INFO: [33mPress CTRL+C to quit[0m
+2024-08-02 18:07:51,214 INFO: 127.0.0.1 - - [02/Aug/2024 18:07:51] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 18:07:51,628 ERROR: Error processing listing_count: (2006, '')
+2024-08-02 18:07:51,628 INFO: 127.0.0.1 - - [02/Aug/2024 18:07:51] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 18:07:51,638 ERROR: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 363, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 324, in execute
+    application_iter = app(environ, start_response)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1489, in wsgi_app
+    ctx.pop(error)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 426, in pop
+    app_ctx.pop(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 262, in pop
+    self.app.do_teardown_appcontext(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1344, in do_teardown_appcontext
+    self.ensure_sync(func)(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_mysqldb\__init__.py", line 114, in teardown
+    ctx.mysql_db.close()
+MySQLdb.OperationalError: (2006, '')
+2024-08-02 18:10:17,589 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-02 18:10:17,590 INFO: [33mPress CTRL+C to quit[0m
+2024-08-02 18:10:33,444 INFO: 127.0.0.1 - - [02/Aug/2024 18:10:33] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 18:10:33,683 ERROR: Exception on /search [POST]
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: fetch_data() missing 2 required positional arguments: 'query' and 'params'
+2024-08-02 18:10:33,685 INFO: 127.0.0.1 - - [02/Aug/2024 18:10:33] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 19:35:11,824 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-08-02 19:35:11,824 INFO: [33mPress CTRL+C to quit[0m
+2024-08-02 19:35:26,533 INFO: 127.0.0.1 - - [02/Aug/2024 19:35:26] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 19:35:26,957 ERROR: Error in handle_queries: (2006, '')
+2024-08-02 19:35:26,958 INFO: 127.0.0.1 - - [02/Aug/2024 19:35:26] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 19:35:27,012 ERROR: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 363, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 324, in execute
+    application_iter = app(environ, start_response)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1489, in wsgi_app
+    ctx.pop(error)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 426, in pop
+    app_ctx.pop(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 262, in pop
+    self.app.do_teardown_appcontext(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1344, in do_teardown_appcontext
+    self.ensure_sync(func)(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_mysqldb\__init__.py", line 114, in teardown
+    ctx.mysql_db.close()
+MySQLdb.OperationalError: (2006, '')
+2024-08-02 19:35:39,663 INFO: 127.0.0.1 - - [02/Aug/2024 19:35:39] "OPTIONS /search HTTP/1.1" 200 -
+2024-08-02 19:35:40,099 ERROR: Error in handle_queries: (2006, '')
+2024-08-02 19:35:40,100 INFO: 127.0.0.1 - - [02/Aug/2024 19:35:40] "[35m[1mPOST /search HTTP/1.1[0m" 500 -
+2024-08-02 19:35:40,105 ERROR: Error on request:
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 363, in run_wsgi
+    execute(self.server.app)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\werkzeug\serving.py", line 324, in execute
+    application_iter = app(environ, start_response)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1489, in wsgi_app
+    ctx.pop(error)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 426, in pop
+    app_ctx.pop(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\ctx.py", line 262, in pop
+    self.app.do_teardown_appcontext(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1344, in do_teardown_appcontext
+    self.ensure_sync(func)(exc)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_mysqldb\__init__.py", line 114, in teardown
+    ctx.mysql_db.close()
+MySQLdb.OperationalError: (2006, '')

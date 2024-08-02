@@ -170,7 +170,8 @@ class CarDataScraper:
                 print("Equipment not found")
             car_data.update(equipment_dict)
 
-
+            car_data['startDate']="2024-07-30"
+            car_data['updateDate']="2024-07-31"
             end_time = time.time()
             # car_data['scrape_time'] = end_time - start_time
 

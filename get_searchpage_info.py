@@ -33,7 +33,7 @@ def save_to_sql(df):
 def main():
     helper = StringHelper()
     # 使用反轉字串方法
-    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('ford','mondeo-hybrid')
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('audi','a8l')
 
     # save_to_csv(all_car_url, all_car_locations, all_car_views)
     print(type(all_car_url))
