@@ -16,7 +16,7 @@ def save_to_csv(car_url, car_locations, car_views):
 def main():
     helper = StringHelper()
     # 使用反轉字串方法
-    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('audi')
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('ferrari')
 
     save_to_csv(all_car_url, all_car_locations, all_car_views)
     print(type(all_car_url))

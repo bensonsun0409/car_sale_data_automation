@@ -69,6 +69,7 @@
 # scrape_example.py
 from DownloadHelper.CarPageHelper import CarDataScraper
 from DownloadHelper.CarDealerScraper import CarDealerScraper
+from DownloadHelper.CarDealerHelper import WebScraper
 
 def main():
     url = "https://www.8891.com.tw/findBuz-index.html"
@@ -77,10 +78,6 @@ def main():
     total_data = scraper.total_counts(url)
     print(total_data)
     current_value = 0
-    # while current_value + 30 < total_data:
-    #     current_value += 30
-    #     print(current_value)
-    # 在循環開始前初始化列表
     all_titles = []
     all_links = []
     all_ratings = []
@@ -90,8 +87,17 @@ def main():
     all_view_counts = []
     if total_data % 30 == 0:
         while current_value < total_data:
-            print('here')
             print(current_value)
+            url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}&'
+            titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
+            # 將新的數據添加到對應的列表中
+            all_titles.extend(titles)
+            all_links.extend(links)
+            all_ratings.extend(ratings)
+            all_rating_counts.extend(rating_counts)
+            all_in_stocks.extend(in_stocks)
+            all_in_stores.extend(in_stores)
+            all_view_counts.extend(view_counts)
             current_value += 30
     else:
         while current_value <= total_data:
@@ -112,6 +118,7 @@ def main():
     # titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
     #
     # 打印結果
+    print(f'車行總數{len(all_titles)}')
     for i in range(len(all_titles)):
         print(f"標題: {all_titles[i]}")
         print(f"連結: {all_links[i]}")
@@ -121,6 +128,25 @@ def main():
         print(f"在店數量: {all_in_stores[i]}")
         print(f"瀏覽數: {all_view_counts[i]}")
         print("------------------------")
+
+    all_car_data = []
+    all_car_data2 = []
+    for url in all_links:
+        scraper = WebScraper()
+        car_data = scraper.scrape_data(url)
+        if car_data:
+            transaction_record, address = car_data
+            all_car_data.append(transaction_record)
+            all_car_data2.append(address)
+            print(f"Processed URL: {url}")
+            print(f"Car Data: {transaction_record}")
+            print(f"Car Data: {address}")
+        else:
+            print("未找到所需數據")
+    print(len(all_links))
+    print(len(all_car_data))
+    print(len(all_car_data2))
+
 
     # 您可以在這裡進行更多的數據處理
     # 例如：計算平均評分
