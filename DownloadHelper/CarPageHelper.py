@@ -6,6 +6,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import re
 import time
 import json
+import datetime
+
 
 class CarDataScraper:
     def __init__(self):
@@ -53,6 +55,7 @@ class CarDataScraper:
         return int(result * 10000) 
     
     def scrape_car_data(self, url):
+        
         try:
             start_time = time.time()
             self.driver.get(url)
@@ -63,16 +66,25 @@ class CarDataScraper:
             )
 
             car_data = {}
-
+            try:
+                todayDate = datetime.date.today()
+                car_data['scrawldate'] = todayDate
+                print(todayDate) 
+                print(car_data['scrawldate'])
+            except:
+                print("日期錯誤")
             # 提取品牌和車ID
             try:
                 input_string = self.driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div').text
-                match = re.search(r'中古車 > (.*?) > .*?編號：(S\d+)', input_string)
+                match = re.search(r'中古車 > (.*?) > (.*?) > 編號：(S\d+)', input_string)
                 if match:
-                    car_data['brand'] = match.group(1)
-                    car_data['car_id'] = match.group(2)
+                    car_data['brand'] = match.group(1)  # 提取品牌 (例如：艾密羅密歐/Alfa Romeo)
+                    car_data['model'] = match.group(2)  # 提取車型 (例如：GIULIA)
+                    car_data['car_id'] = match.group(3) # 提取編號 (例如：S4001090)
+
             except NoSuchElementException:
                 car_data['brand'] = None
+                car_data['model'] = None
                 car_data['car_id'] = None
 
             # 提取價格
@@ -98,9 +110,10 @@ class CarDataScraper:
 
             #提取年齡
             try:
-                car_data['year'] = self.driver.find_element(By.XPATH, '//*[@id="main-box"]/div[3]/div[2]/ul/li[2]/span[1]').text
+                year_temp= self.driver.find_element(By.XPATH, '//*[@id="main-box"]/div[3]/div[2]/ul/li[2]/span[1]').text
+                car_data['product_year'] = year_temp[:-1]
             except NoSuchElementException:
-                car_data['year'] = None    
+                car_data['product_year'] = None    
 
             #提取顏色
             try:
@@ -129,7 +142,7 @@ class CarDataScraper:
             try:
                 location= self.driver.find_element(By.XPATH,
                                                                     '//*[@id="main-box"]/div[3]/div[2]/a/span').text
-                car_data['car_location'] = location[0:6]
+                car_data['car_location'] = location[3:6]
                 #取前六字
             except NoSuchElementException:
                 car_data['car_location'] = None
@@ -170,8 +183,8 @@ class CarDataScraper:
                 print("Equipment not found")
             car_data.update(equipment_dict)
 
-            car_data['startDate']="2024-07-30"
-            car_data['updateDate']="2024-07-31"
+            
+            
             end_time = time.time()
             # car_data['scrape_time'] = end_time - start_time
 
