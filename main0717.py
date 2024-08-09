@@ -1,6 +1,8 @@
 from DownloadHelper.MainPageHelper import StringHelper
 from DownloadHelper.CarPageHelper import CarDataScraper
 import pandas as pd
+import time
+import sys
 
 
 def save_to_csv(car_url, car_locations, car_views):
@@ -15,6 +17,22 @@ def save_to_csv(car_url, car_locations, car_views):
 # 使用StringHelper類的方法
 def main():
     helper = StringHelper()
+    args = sys.argv[1:]
+
+    print(f"Script1 接收到的參數：{args}")
+
+    # 模擬一些處理時間
+    time.sleep(2)
+
+    # 在這裡添加您的主要邏輯，使用這些參數
+    if len(args) == 1:
+        print(f"Script1 處理單個參數: {args[0]}")
+        all_car_url, all_car_locations, all_car_views = helper.scan_all_pages(args[0])
+    elif len(args) == 2:
+        print(f"Script1 處理兩個參數: {args[0]}, {args[1]}")
+        all_car_url, all_car_locations, all_car_views = helper.scan_all_pages(args[0],args[1])
+    else:
+        print("Script1 錯誤：參數數量不正確")
     # 使用反轉字串方法
     all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('ferrari')
 
@@ -39,6 +57,7 @@ def main():
         print(f"Car {i}:")
         print(car_data)
         print("-" * 50)
+
 
 if __name__ == "__main__":
     main()
