@@ -16,6 +16,7 @@ import {
   Checkbox,
   ListItemText,
   OutlinedInput,
+  Button,
 } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import "../style/FilterForm.css";
@@ -561,7 +562,9 @@ const FilterForm = ({ onSearch }) => {
           />
         </Box>
       </div>
-      <button type="submit">搜尋</button>
+      <Button variant="contained" type="Submit">
+        搜尋
+      </Button>
     </form>
   );
 };

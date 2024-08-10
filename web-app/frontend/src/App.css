@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns */
+  gap: 10px; /* Adjust the gap between images */
+}
+
+.imageGrid .imageContainer:nth-child(4),
+.imageGrid .imageContainer:nth-child(5) {
+  grid-column: span 2; /* Make the last two images take two columns */
+}
+
+hr {
+  width: 95%;
+  border: solid 2px #dbd3ff;
+}
+.title {
+  padding-left: 3%;
+  font-size: 40px;
+}

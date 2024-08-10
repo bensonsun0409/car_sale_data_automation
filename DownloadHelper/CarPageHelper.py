@@ -73,18 +73,25 @@ class CarDataScraper:
                 print(car_data['scrawldate'])
             except:
                 print("日期錯誤")
-            # 提取品牌和車ID
             try:
-                input_string = self.driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div').text
-                match = re.search(r'中古車 > (.*?) > (.*?) > 編號：(S\d+)', input_string)
-                if match:
-                    car_data['brand'] = match.group(1)  # 提取品牌 (例如：艾密羅密歐/Alfa Romeo)
-                    car_data['model'] = match.group(2)  # 提取車型 (例如：GIULIA)
-                    car_data['car_id'] = match.group(3) # 提取編號 (例如：S4001090)
-
-            except NoSuchElementException:
+                title = self.driver.find_element(By.CLASS_NAME, 'breadcrumb')
+                link = title.find_elements(By.CLASS_NAME,'NormalLink')
+                car_data['brand'] = link[2].text
+                car_data['model'] = link[3].text
+            except:
                 car_data['brand'] = None
                 car_data['model'] = None
+
+
+            try:
+                input_string = self.driver.find_element(By.XPATH, '//*[@id="infos-ab-flag"]/div').text
+                
+                match = re.search(r'編號：(S\d+)', input_string)
+                if match:
+                    car_data['car_id'] = match.group(1)  # 提取品牌 (例如：艾密羅密歐/Alfa Romeo)
+                    
+            except NoSuchElementException:
+
                 car_data['car_id'] = None
 
             # 提取價格

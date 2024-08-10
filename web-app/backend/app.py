@@ -50,7 +50,7 @@ def generate_plot(dataframe, x_col, y_col, title, x_col_name, y_col_name):
         return None
     
     try:
-        plt.figure(figsize=(10, 6))
+        plt.figure(figsize=(6, 4))
         plt.plot(dataframe[x_col], dataframe[y_col], marker='o')
         plt.xlabel(x_col_name, fontproperties=custom_font)
         plt.ylabel(y_col_name, fontproperties=custom_font)

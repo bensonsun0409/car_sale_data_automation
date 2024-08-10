@@ -38,10 +38,39 @@ def save_to_sql(df):
         if not df.empty:
             logging.error(f"DataFrame content:\n{df.to_string()}")
 
-def process_brand(brand,model):
+def main():
+    helper = StringHelper()
+    # 使用反轉字串方法
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('ferrari')
+
+    save_to_csv(all_car_url, all_car_locations, all_car_views)
+    print(type(all_car_url))
+    print(all_car_url)
+
+    # scraper = CarDataScraper()
+    all_car_data = []
+
+    for url in all_car_url:
+        scraper = CarDataScraper()
+        car_data = scraper.scrape_car_data(url)
+        all_car_data.append(car_data)
+        print(f"Processed URL: {url}")
+        print(f"Car Data: {car_data}")
+
+        scraper.close()
+
+    print("All car data collected:")
+    for i, car_data in enumerate(all_car_data, 1):
+        print(f"Car {i}:")
+        print(car_data)
+        print("-" * 50)
+
+if __name__ == "__main__":
+    main()
+def main():
     helper = StringHelper()
     # 使用 StringHelper 类的方法
-    all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(brand,model)
+    all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(brand)
 
     print(f"Processing brand: {brand}")
     print(type(all_car_url))
@@ -74,21 +103,8 @@ def process_brand(brand,model):
     save_to_sql(result)
     save_to_csv(result)
 
-def main():
-    start_time=time.time()
-    brands = [ 'alfa-romeo','aston-martin','audi','austin','abarth','bentley','bmw','citroen','ferrari','fiat','infiniti','jaguar','jeep',
-              'lamborghini','land-rover','lexus','lotus','mercedes-benz','maserati','mini','mclaren','opel','peugeot','porsche','rolls-royce',
-              'skoda','smart','tesla','volvo']
-
-    for brand in brands:
-        process_brand(brand)
-    end_time=time.time()
-    total_tme=end_time-start_time
-    print(f"總共花了{total_tme}秒")
-
 if __name__ == "__main__":
     main()
-
 
 
 
