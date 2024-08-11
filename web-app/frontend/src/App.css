@@ -55,3 +55,32 @@ hr {
   padding-left: 3%;
   font-size: 40px;
 }
+.outputImg {
+  width: 100%;
+  height: auto;
+}
+
+.error-message {
+  color: red;
+}
+
+.title {
+  text-align: center;
+}
+
+body {
+  padding: 20px;
+}
+
+header,
+main {
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 1200px;
+}
+.no-data-message {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #ff0000; /* 红色字体 */
+}

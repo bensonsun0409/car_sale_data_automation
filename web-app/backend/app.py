@@ -48,7 +48,7 @@ def fetch_data(query, params):
 def generate_plot(dataframe, x_col, y_col, title, x_col_name, y_col_name):
     if dataframe is None or dataframe.empty:
         return None
-    
+    dataframe.dropna(subset=[x_col, y_col], inplace=True)
     try:
         plt.figure(figsize=(6, 4))
         plt.plot(dataframe[x_col], dataframe[y_col], marker='o')
@@ -72,7 +72,7 @@ def generate_plot(dataframe, x_col, y_col, title, x_col_name, y_col_name):
         app.logger.error(f"Plot generation error: {str(e)}")
         app.logger.exception("Exception details:")
         return None
-def get_average_cumulative_count(startDate, endDate, location=None, production_year=None, year=None, selected_brand=None, lowMilage=None, highMilage=None, video=None, verify=None, selectedEquip=None, color=None, city=None, loc=None, lowView=None, highView=None, lowAsknum=None, highAsknum=None, seller=None):
+def get_average_cumulative_count(startDate, endDate,  production_year=None, year=None, selected_brand=None, lowMilage=None, highMilage=None, video=None, verify=None, selectedEquip=None, color=None, city=None, loc=None, lowView=None, highView=None, lowAsknum=None, highAsknum=None, seller=None):
     query = """
         SELECT
             t1.scrawldate,
@@ -82,8 +82,10 @@ def get_average_cumulative_count(startDate, endDate, location=None, production_y
                 car_id,
                 scrawldate,
                 COUNT(scrawldate) OVER (PARTITION BY car_id ORDER BY scrawldate ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as cumulative_count,
-                product_year, year, brand, milage, video, verify_tag, location, car_location, views, ask_num, seller_info
-            FROM car_info.car_data
+                product_year, year, brand, milage, video, verify_tag, location, car_location, views, ask_num, seller_info,color,model,胎壓偵測,
+                動態穩定系統, 防盜系統, keyless免鑰系統, 循跡系統, 中控鎖, 剎車輔助系統, 兒童安全椅固定裝置, ABS防鎖死, 安全氣囊, 定速系統, LED頭燈, 倒車顯影系統,
+                衛星導航,多功能方向盤, 倒車雷達, 恆溫空調, 自動停車系統, 電動天窗, `真皮/皮革座椅`
+                FROM car_info.car_data
             WHERE scrawldate >= %s AND scrawldate <= %s) t1
         JOIN
             (SELECT
@@ -101,12 +103,9 @@ def get_average_cumulative_count(startDate, endDate, location=None, production_y
     """
     params = [startDate, endDate, startDate, endDate]
 
-    if location:
-        query += " AND t1.location IN (%s)"
-        params.append(location)
     if production_year:
-        query += " AND t1.product_year IN (%s)"
-        params.append(production_year)
+        query += f" AND t1.product_year IN ({production_year})"
+       
     if len(selected_brand) != 0:
         str1=f' AND brand in (select brand from car_info.car_data where'
         like_conditions = []
@@ -119,13 +118,12 @@ def get_average_cumulative_count(startDate, endDate, location=None, production_y
         # 將查詢字串添加到主查詢中
         query += str1
     if year:
-        query += " AND t1.year IN (%s)"
-        params.append(year)
+        query += f" AND t1.year IN ({year})"
+
 
     if lowMilage and highMilage:
-        query += " AND t1.milage >= %s AND t1.milage <= %s"
-        params.append(lowMilage)
-        params.append(highMilage)
+        query += f" AND t1.milage >= {lowMilage} AND t1.milage <= {highMilage}"
+
     if video:
         query += " AND t1.video = 'Y'"
     if verify:
@@ -135,25 +133,23 @@ def get_average_cumulative_count(startDate, endDate, location=None, production_y
             equip = equip.strip()
             query += f" AND t1.{equip} = 'Y'"
     if city:
-        query += " AND t1.location IN (%s)"
-        params.append(city)
+        query += f" AND t1.location IN ({city})"
+
     if color:
-        query += " AND t1.color IN (%s)"
-        params.append(color)
+        query += f" AND t1.color IN ({color})"
+
     if loc:
-        query += " AND t1.car_location IN (%s)"
-        params.append(loc)
+        query += f" AND t1.car_location IN ({loc})"
+
     if lowView and highView:
-        query += " AND t1.views >= %s AND t1.views <= %s"
-        params.append(lowView)
-        params.append(highView)
+        query +=f" AND t1.views >= {lowView} AND t1.views <= {highView}"
+
     if lowAsknum and highAsknum:
-        query += " AND t1.ask_num >= %s AND t1.ask_num <= %s"
-        params.append(lowAsknum)
-        params.append(highAsknum)
+        query += f" AND t1.ask_num >= {lowAsknum} AND t1.ask_num <= {highAsknum}"
+
     if seller:
-        query += " AND t1.seller_info LIKE %s"
-        params.append(f"%{seller}%")
+        query += f'AND t1.seller_info LIKE "%%{seller}%%" '
+       
 
     query += " GROUP BY t1.scrawldate ORDER BY t1.scrawldate"
 
@@ -192,7 +188,7 @@ def search():
         "average_price": """
             SELECT scrawldate, AVG(price) as avg_price 
             FROM car_info.car_data 
-            WHERE scrawldate >= %s AND scrawldate <= %s
+            WHERE price != "電洽" AND scrawldate >= %s AND scrawldate <= %s 
         """,
 
         "listing_count": """
@@ -212,6 +208,8 @@ def search():
             FROM car_info.car_data 
             WHERE scrawldate >= %s AND scrawldate <= %s
         """,
+
+
     }
 
         params = [startDate, endDate]
@@ -252,41 +250,41 @@ def search():
             
         if lowMilage and highMilage:
             for key in queries:
-                queries[key] += f"AND milage >= {lowMilage} and milage <= {highMilage}"
+                queries[key] += f" AND milage >= {lowMilage} and milage <= {highMilage}"
         
         if video:
             for key in queries:
-                queries[key] += f'AND video = "Y" '
+                queries[key] += f' AND video = "Y" '
         
         if verify:
             for key in queries:
-                queries[key] += f'AND verify_tag = "Y" '
+                queries[key] += f' AND verify_tag = "Y" '
 
         if len(selectedEquip)!=0:
             for equip in selectedEquip:
                 equip=equip.strip()
                 print(equip)
                 for key in queries:
-                    queries[key] += f'AND {equip} = "Y" '
+                    queries[key] += f' AND {equip} = "Y" '
         if city:
             for key in queries:
-                queries[key] += f"AND location in ({city}) "
+                queries[key] += f" AND location in ({city}) "
         if color:
             for key in queries:
-                queries[key] += f"AND color in ({color}) "
+                queries[key] += f" AND color in ({color}) "
         if loc:
             for key in queries:
-                queries[key] += f'AND car_location in ({loc}) '
+                queries[key] += f' AND car_location in ({loc}) '
         if lowView and highView:
             for key in queries:
-                queries[key] += f"AND views >= {lowView} and views <= {highView}"
+                queries[key] += f" AND views >= {lowView} and views <= {highView}"
         
         if lowAsknum and highAsknum:
             for key in queries:
-                queries[key] += f"AND ask_num >= {lowAsknum} and ask_num <= {highAsknum}"
+                queries[key] += f" AND ask_num >= {lowAsknum} and ask_num <= {highAsknum}"
         if seller:
             for key in queries:
-                queries[key] += f'AND seller_info LIKE  "%%{seller}%%" '        
+                queries[key] += f' AND seller_info LIKE  "%%{seller}%%" '        
 
         for key in queries:
             queries[key] += " GROUP BY scrawldate ORDER BY scrawldate"
@@ -294,7 +292,7 @@ def search():
         images = {}
         print(queries)
         avg_cumulative_count_df = get_average_cumulative_count(
-                startDate, endDate, loc, production_year, year, selected_brand,
+                startDate, endDate,  production_year, year, selected_brand,
                 lowMilage, highMilage, video, verify, selectedEquip, color,
                 city, loc, lowView, highView, lowAsknum, highAsknum, seller)
         for key, query in queries.items():

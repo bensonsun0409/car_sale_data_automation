@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField"; // 添加这一行
 import "dayjs/locale/zh-cn";
 import Fuse from "fuse.js";
 import {
+  Grid,
   Box,
   FormControl,
   InputLabel,
@@ -270,7 +271,9 @@ const FilterForm = ({ onSearch }) => {
   };
   return (
     <form onSubmit={handleSubmit}>
-      <div className="filter">
+      
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={4} md={3}>
         <Box sx={{ maxWidth: 250, fontSize: 3 }}>
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
@@ -301,7 +304,8 @@ const FilterForm = ({ onSearch }) => {
             </DemoContainer>
           </LocalizationProvider>
         </Box>
-
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <Box sx={{ maxWidth: 250 }}>
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
@@ -316,6 +320,8 @@ const FilterForm = ({ onSearch }) => {
             </DemoContainer>
           </LocalizationProvider>
         </Box>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="year-select-label">出廠年份</InputLabel>
           <Select
@@ -335,6 +341,8 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="year-select-label">年式</InputLabel>
           <Select
@@ -354,6 +362,8 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="brand-select-label">品牌</InputLabel>
           <Select
@@ -374,6 +384,8 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="model-select-label">車型</InputLabel>
           <Select
@@ -394,7 +406,8 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
-
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="model-select-label" sx={{ fontSize: 15 }}>
             顏色
@@ -417,8 +430,9 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
-      </div>
-      <div className="filter2">
+        </Grid>
+      
+        <Grid item xs={12} sm={4} md={3}>
         <div className="inputItem">
           <Box sx={{ width: "120px" }}>
             <TextField
@@ -437,6 +451,8 @@ const FilterForm = ({ onSearch }) => {
             />
           </Box>
         </div>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <Box sx={{ width: "250px" }}>
           <FormControlLabel
             control={
@@ -445,6 +461,8 @@ const FilterForm = ({ onSearch }) => {
             label="影片看車"
           />
         </Box>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <Box sx={{ width: "250px" }}>
           <FormControlLabel
             control={
@@ -453,6 +471,8 @@ const FilterForm = ({ onSearch }) => {
             label="第三方鑑定"
           />
         </Box>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="model-select-label" sx={{ fontSize: 15 }}>
             配備
@@ -475,6 +495,8 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="city-select-label">縣市</InputLabel>
           <Select
@@ -495,6 +517,8 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="loc-select-label">區域</InputLabel>
           <Select
@@ -515,6 +539,8 @@ const FilterForm = ({ onSearch }) => {
             ))}
           </Select>
         </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <div className="inputItem">
           <Box sx={{ width: "120px" }}>
             <TextField
@@ -533,8 +559,8 @@ const FilterForm = ({ onSearch }) => {
             />
           </Box>
         </div>
-      </div>
-      <div className="filter2">
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <div className="inputItem">
           <Box sx={{ width: "120px" }}>
             <TextField
@@ -553,6 +579,8 @@ const FilterForm = ({ onSearch }) => {
             />
           </Box>
         </div>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
         <Box sx={{ width: "400px" }}>
           <TextField
             id="outlined-basic"
@@ -561,10 +589,13 @@ const FilterForm = ({ onSearch }) => {
             onChange={handleSeller}
           />
         </Box>
-      </div>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
       <Button variant="contained" type="Submit">
         搜尋
       </Button>
+      </Grid>
+      </Grid>
     </form>
   );
 };

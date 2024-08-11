@@ -6,6 +6,7 @@ import traceback
 import time
 import logging
 from sqlalchemy.exc import SQLAlchemyError
+import sys
 logging.basicConfig(filename='sql_error.log', level=logging.ERROR)
 def save_to_csv(result):
     # df1 = pd.DataFrame({
@@ -40,10 +41,19 @@ def save_to_sql(df):
 
 def main():
     helper = StringHelper()
-    # 使用反轉字串方法
-    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages('ferrari')
+    args = sys.argv[1:]
 
-    save_to_csv(all_car_url, all_car_locations, all_car_views)
+    print(f"Script1 接收到的參數：{args}")
+    # 使用反轉字串方法
+    if len(args) == 1:
+        print(f"Script1 處理單個參數: {args[0]}")
+        all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(args[0])
+    elif len(args) == 2:
+        print(f"Script1 處理兩個參數: {args[0]}, {args[1]}")
+        all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(args[0],args[1])
+    else:
+        print("Script1 錯誤：參數數量不正確")
+
     print(type(all_car_url))
     print(all_car_url)
 
@@ -60,37 +70,6 @@ def main():
         scraper.close()
 
     print("All car data collected:")
-    for i, car_data in enumerate(all_car_data, 1):
-        print(f"Car {i}:")
-        print(car_data)
-        print("-" * 50)
-
-if __name__ == "__main__":
-    main()
-def main():
-    helper = StringHelper()
-    # 使用 StringHelper 类的方法
-    all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(brand)
-
-    print(f"Processing brand: {brand}")
-    print(type(all_car_url))
-    print(all_car_url)
-
-    all_car_data = []
-
-    for url in all_car_url:
-        scraper = CarDataScraper()
-        try:
-            car_data = scraper.scrape_car_data(url)
-            all_car_data.append(car_data)
-            print(f"Processed URL: {url}")
-            print(f"Car Data: {car_data}")
-        except Exception as e:
-            print(f"Error processing URL {url}: {e}")
-        finally:
-            scraper.close()
-
-    print("All car data collected:")
     df1 = pd.DataFrame({
         'url': all_car_url,
         'location': all_car_locations,
@@ -102,10 +81,6 @@ def main():
     print(result)
     save_to_sql(result)
     save_to_csv(result)
-
 if __name__ == "__main__":
     main()
-
-
-
 

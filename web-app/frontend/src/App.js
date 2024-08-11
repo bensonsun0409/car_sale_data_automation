@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FilterForm from "./component/FilterForm";
-import { Grid } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import "./App.css";
+
 const App = () => {
   const [images, setImages] = useState({});
   const [error, setError] = useState(""); // 用于存储错误消息
+  const [searched, setSearched] = useState(false); // 用于追踪用户是否进行了搜索
+  const [loading, setLoading] = useState(false); // 用于追踪搜索请求的状态
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -19,6 +23,8 @@ const App = () => {
   const handleSearch = async (filters) => {
     try {
       setError(""); // 在每次搜索前清空错误消息
+      setSearched(true); // 用户进行了搜索
+      setLoading(true); // 搜索请求进行中
       const response = await fetch("http://localhost:5000/search", {
         method: "POST",
         headers: {
@@ -32,118 +38,82 @@ const App = () => {
 
       const data = await response.json();
       if (data["success"]) {
-        setImages(data["images"]); // 只设置 images 字段
+        const filteredImages = {};
+        for (const [key, value] of Object.entries(data["images"])) {
+          if (value) { // 检查图像数据是否存在
+            filteredImages[key] = value;
+          }
+        }
+        setImages(filteredImages); // 设置过滤后的 images
       } else {
         setImages({}); // 清空 images
-        setError(data["message"] || "An error occurred.123"); // 设置错误消息
+        setError(data["message"] || "An error occurred."); // 设置错误消息
       }
     } catch (error) {
       console.error("Error fetching data:", error);
       setImages({}); // 清空 images
       setError(error["message"] || "An error occurred.");
+    } finally {
+      setLoading(false); // 搜索请求结束
     }
   };
+
+  const handleDownload = (base64Image, filename) => {
+    const link = document.createElement("a");
+    link.href = `data:image/png;base64,${base64Image}`;
+    link.download = `${filename}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const hasImages = Object.keys(images).length > 0;
+
+  useEffect(() => {
+    if (searched && !loading && !hasImages && !error) {
+      setError("沒有資料");
+    }
+  }, [searched, loading, hasImages, error]);
+
   return (
     <div>
       <header>
         <h1 className="title">8891報表</h1>
         <hr />
       </header>
-      <body>
+      <main>
         <FilterForm onSearch={handleSearch} />
-        {error && <div className="error-message">{error}</div>}{" "}
-        {/* 显示错误消息 */}
+        {error && <div className="error-message">{error}</div>} {/* 显示错误消息 */}
+        {loading && <div className="loading-message">Loading...</div>} {/* 显示加载消息 */}
+        {!loading && searched && !hasImages && !error && (
+          <div className="no-data-message">沒有資料</div> // 显示“沒有資料”
+        )}
         {hasImages && (
           <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <h3>{Object.keys(images)[0]}</h3>
-              <Box sx={{ maxWidth: "30%" }}>
-                <img
-                  src={`data:image/png;base64,${Object.values(images)[0]}`}
-                  alt={Object.keys(images)[0]}
-                  className="outputImg"
-                  sx={{
-                    maxWidth: "80%",
-                    maxHeight: "80%",
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={4}>
-              <h3>{Object.keys(images)[1]}</h3>
-              <Box sx={{ maxWidth: "30%" }}>
-                <img
-                  src={`data:image/png;base64,${Object.values(images)[1]}`}
-                  alt={Object.keys(images)[1]}
-                  className="outputImg"
-                  sx={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={4}>
-              <h3>{Object.keys(images)[2]}</h3>
-              <Box sx={{ maxWidth: "30%" }}>
-                <img
-                  src={`data:image/png;base64,${Object.values(images)[2]}`}
-                  alt={Object.keys(images)[2]}
-                  className="outputImg"
-                  sx={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <h3>{Object.keys(images)[3]}</h3>
-              <Box sx={{ maxWidth: "30%" }}>
-                <img
-                  src={`data:image/png;base64,${Object.values(images)[3]}`}
-                  alt={Object.keys(images)[3]}
-                  className="outputImg"
-                  sx={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <h3>{Object.keys(images)[4]}</h3>
-              <Box sx={{ maxWidth: "30%" }}>
-                <img
-                  src={`data:image/png;base64,${Object.values(images)[4]}`}
-                  alt={Object.keys(images)[4]}
-                  className="outputImg"
-                  sx={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-            </Grid>
+            {Object.keys(images).map((key, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <h3>{key}</h3>
+                <Box sx={{ maxWidth: "100%" }}>
+                  <img
+                    src={`data:image/png;base64,${images[key]}`}
+                    alt={key}
+                    className="outputImg"
+                    style={{ maxWidth: "100%", height: "auto" }}
+                  />
+                </Box>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleDownload(images[key], key)}
+                  style={{ marginTop: "10px" }}
+                >
+                  下載圖片
+                </Button>
+              </Grid>
+            ))}
           </Grid>
         )}
-      </body>
+      </main>
     </div>
   );
 };
