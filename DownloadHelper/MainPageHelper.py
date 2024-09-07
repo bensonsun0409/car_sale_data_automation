@@ -37,31 +37,31 @@ class StringHelper:
                     match=re.search(r'\d{4}',title)
                     if(match):
                         year=int(match.group())
-                        print(f"  年式：{year}")
+                        # print(f"  年式：{year}")
                     else:
-                        print("無年式資料")
+                        print("no year data")
                     href = a_element.get_attribute('href')
                     location = a_element.find_element(By.XPATH, './/div/div[2]/div[1]/div[3]/span[1]')
                     views = a_element.find_element(By.XPATH, './/div/div[2]/div[1]/div[3]/span[3]')
 
-                    print(f"a 元素 {index}:{href}")
-                    print(f"  位置: {location.text}")
-                    print(f"  瀏覽量: {views.text}")
-                    print(f"  年式:{year}")
-                    print()
+                    # print(f"a index: {index}:{href}")
+                    # print(f"  location: {location.text}")
+                    # print(f"  views: {views.text}")
+                    # print(f"  year:{year}")
+                    # print()
                     car_views.append(views.text[:-3])
                     car_locations.append(location.text)
                     car_url.append(href)
                     car_year.append(year)
                 except NoSuchElementException:
-                    print(f"無法找到元素 {index} 的某些資訊")
+                    print(f"Can't find some information at {index} ")
 
             end_time = time.time()
             download_time = end_time - start_time
-            print(f"Download time: {download_time} seconds")
+            # print(f"Download time: {download_time} seconds")
             return car_url, car_locations, car_views, car_year
         except Exception as e:
-            print(f"發生錯誤: {str(e)}")
+            print(f"Happen error: {str(e)}")
             return None
         finally:
             if 'driver' in locals():
@@ -72,12 +72,12 @@ class StringHelper:
         page = 1
         all_car_url, all_car_locations, all_car_views, all_year = [], [], [],[]
         start_time = time.time()
-
+    
         while True:
             try:
                 result = StringHelper.get_page_info(page, brand, model)
                 if not result or not any(result):
-                    print(f"沒有更多頁面，總共掃描了 {page - 1} 頁")
+                    print(f"no more page, only scan {page - 1} pages")
                     break
                 car_url, car_locations, car_views, car_year = result
                 all_car_url.extend(car_url)
@@ -87,10 +87,9 @@ class StringHelper:
                 page += 1
                 time.sleep(1)
             except Exception as e:
-                print(f"掃描頁面 {page} 時發生錯誤: {str(e)}")
-                break
+                print(f" Scan {page} page error: {str(e)}")
 
         end_time = time.time()
-        print(f'總共耗時 {end_time - start_time} 秒')
+        print(f'Total cost {end_time - start_time} second')
 
         return all_car_url, all_car_locations, all_car_views, all_year

@@ -1,0 +1,316 @@
+Script1 receive argument: ['audi', 'a1']
+Script1 process two argument: audi, a1
+no more page, only scan 1 pages
+Total cost 21.611409664154053 second
+<class 'list'>
+['https://auto.8891.com.tw/usedauto-infos-4009512.html?display__sale_code=9005013&flow_id=be0a0185-cb66-4a01-b997-caea5b8ffcf5', 'https://auto.8891.com.tw/usedauto-infos-4002658.html?display__sale_code=9005011&flow_id=33362457-16d4-4e21-bf19-6a448967ae51', 'https://auto.8891.com.tw/usedauto-infos-3999134.html?display__sale_code=9005011&flow_id=1f3b9704-1432-4993-9d05-d14e0da74047', 'https://auto.8891.com.tw/usedauto-infos-3983910.html?display__sale_code=9005012&flow_id=79c20ace-566d-47f5-be60-eba52c73060d', 'https://auto.8891.com.tw/usedauto-infos-3981439.html?display__sale_code=9005011&flow_id=2b65c0d4-d2a4-49f0-a48f-ca408ab98588', 'https://auto.8891.com.tw/usedauto-infos-4008092.html?display__sale_code=9005011&flow_id=ea215d13-3648-4fd9-8981-4830895d6730', 'https://auto.8891.com.tw/usedauto-infos-3999040.html?display__sale_code=&flow_id=42571f04-10fe-475d-96e6-eb278c06e1d1', 'https://auto.8891.com.tw/usedauto-infos-4011485.html?display__sale_code=&flow_id=d71d03be-a0cd-48f1-a93b-6bb6f8988da3', 'https://auto.8891.com.tw/usedauto-infos-4011024.html?display__sale_code=&flow_id=c97bf3f6-d5cd-4541-8e14-98b1b0bd828a', 'https://auto.8891.com.tw/usedauto-infos-4010325.html?display__sale_code=&flow_id=a2d87b62-ed1c-48c2-9b8c-4225452113e4', 'https://auto.8891.com.tw/usedauto-infos-4009653.html?display__sale_code=&flow_id=4663d72d-0a90-4da9-99b3-0104050e9c68', 'https://auto.8891.com.tw/usedauto-infos-4007468.html?display__sale_code=&flow_id=8d5db579-54a6-4a95-9770-0467674be94a', 'https://auto.8891.com.tw/usedauto-infos-4007113.html?display__sale_code=&flow_id=9aeee808-2196-42ff-be1d-c2a8914a14e4', 'https://auto.8891.com.tw/usedauto-infos-4007008.html?display__sale_code=&flow_id=672288dd-7c3a-4526-81c2-9b7c588be323', 'https://auto.8891.com.tw/usedauto-infos-4006983.html?display__sale_code=&flow_id=41ccd8fd-fd21-43f8-bd31-abec2f5384af', 'https://auto.8891.com.tw/usedauto-infos-4004664.html?display__sale_code=&flow_id=95a12c28-81e4-4bb8-ae9e-c6d9874390d0', 'https://auto.8891.com.tw/usedauto-infos-4003749.html?display__sale_code=&flow_id=dd2096f3-333b-4e29-8a91-049bba08c8c0', 'https://auto.8891.com.tw/usedauto-infos-4001237.html?display__sale_code=&flow_id=4d3c22ed-c82b-462a-b511-7181d507013f', 'https://auto.8891.com.tw/usedauto-infos-3947431.html?display__sale_code=&flow_id=f71d3f70-38f4-442e-885f-2c9ef50b4278', 'https://auto.8891.com.tw/usedauto-infos-3999147.html?display__sale_code=&flow_id=de729970-3e7e-4e14-af9e-dc707def4b1d', 'https://auto.8891.com.tw/usedauto-infos-3998699.html?display__sale_code=&flow_id=1e009608-7ce7-450d-98ce-66fad9462891', 'https://auto.8891.com.tw/usedauto-infos-3998565.html?display__sale_code=&flow_id=0f4666ba-05c8-42a5-afdf-5358a983009e', 'https://auto.8891.com.tw/usedauto-infos-3994776.html?display__sale_code=&flow_id=748c64db-a646-4a08-a56f-86d02a2d3563', 'https://auto.8891.com.tw/usedauto-infos-3993026.html?display__sale_code=&flow_id=ba847343-b181-4f2c-b5a0-1af7526e635a', 'https://auto.8891.com.tw/usedauto-infos-3990175.html?display__sale_code=&flow_id=4d768a8b-a161-47b3-b50e-1b8e419408dd', 'https://auto.8891.com.tw/usedauto-infos-3986517.html?display__sale_code=&flow_id=93e7448c-9702-4e65-afc3-208230657cfd', 'https://auto.8891.com.tw/usedauto-infos-3975555.html?display__sale_code=&flow_id=5be4ae8c-4435-4098-b678-d2a35f93898c', 'https://auto.8891.com.tw/usedauto-infos-3983778.html?display__sale_code=&flow_id=691dfd0d-a830-4e21-b7bd-c11a7b1f9a74', 'https://auto.8891.com.tw/usedauto-infos-3983252.html?display__sale_code=&flow_id=14b2f1ce-cfcf-4b2f-a2ce-d92817ee569b', 'https://auto.8891.com.tw/usedauto-infos-3981129.html?display__sale_code=&flow_id=40e9aef9-166f-4ed9-b903-41ba9f2640e7', 'https://auto.8891.com.tw/usedauto-infos-3980306.html?display__sale_code=&flow_id=3141d2bd-a283-47fd-9a22-d382550b23ea', 'https://auto.8891.com.tw/usedauto-infos-3970659.html?display__sale_code=&flow_id=54e87286-96b7-43c5-ab1b-db9e8b60ca9c', 'https://auto.8891.com.tw/usedauto-infos-3968497.html?display__sale_code=&flow_id=41f8a459-81e8-4a62-b0ed-6ff2f4b1eebd', 'https://auto.8891.com.tw/usedauto-infos-3965986.html?display__sale_code=&flow_id=de3bbab2-9826-45aa-8ddc-505f49919385', 'https://auto.8891.com.tw/usedauto-infos-3964543.html?display__sale_code=&flow_id=f92325dd-7610-4c82-86d8-4787434f6d49', 'https://auto.8891.com.tw/usedauto-infos-3963546.html?display__sale_code=&flow_id=fa991f51-27da-4f28-ac2f-5650d31baa9f', 'https://auto.8891.com.tw/usedauto-infos-3952889.html?display__sale_code=&flow_id=c0648394-863c-435f-ba00-55b48eb8dd8c', 'https://auto.8891.com.tw/usedauto-infos-3950408.html?display__sale_code=&flow_id=17299af2-b519-4f9e-acfe-5d4c7c22f3f8', 'https://auto.8891.com.tw/usedauto-infos-3897297.html?display__sale_code=&flow_id=adc25e74-3e65-4f4e-94a2-16270fafacd8']
+All car data collected:
+[39 rows x 4 columns]
+Data successfully saved to SQL.
+Script1 receive argument: ['audi', 'a1-sportback']
+Script1 process two argument: audi, a1-sportback
+no more page, only scan 2 pages
+Total cost 31.505730390548706 second
+<class 'list'>
+['https://auto.8891.com.tw/usedauto-infos-4000646.html?display__sale_code=9005011&flow_id=df706b6b-c387-4810-bee5-4111c74321ba', 'https://auto.8891.com.tw/usedauto-infos-4010807.html?display__sale_code=9005011&flow_id=5203e28e-7582-4197-8309-9b439c443bb0', 'https://auto.8891.com.tw/usedauto-infos-4014120.html?display__sale_code=&flow_id=72306e40-cf51-46e3-92e9-635ccb076298', 'https://auto.8891.com.tw/usedauto-infos-3981285.html?display__sale_code=9005011&flow_id=97f159b4-2202-48a7-827e-27948f7ab69d', 'https://auto.8891.com.tw/usedauto-infos-4013302.html?display__sale_code=&flow_id=4d3f8d9e-b0a9-4795-9cc1-205921817748', 'https://auto.8891.com.tw/usedauto-infos-4011490.html?display__sale_code=&flow_id=fa727898-abba-41f7-90ac-0115f9cf1252', 'https://auto.8891.com.tw/usedauto-infos-4010216.html?display__sale_code=&flow_id=7814b0bd-43d1-48f1-ab99-b68a83ab6703', 'https://auto.8891.com.tw/usedauto-infos-4009384.html?display__sale_code=&flow_id=2e739611-930c-4aef-8ccb-ae5ed175c8c8', 'https://auto.8891.com.tw/usedauto-infos-4007855.html?display__sale_code=&flow_id=e46a9301-fc41-47f1-a805-dc6408d589c8', 'https://auto.8891.com.tw/usedauto-infos-4007482.html?display__sale_code=&flow_id=8c1c7fbc-3d20-490a-90a5-d5c00dfb1b13', 'https://auto.8891.com.tw/usedauto-infos-4006675.html?display__sale_code=&flow_id=9d43fb10-edd8-4b55-9af8-e9a1d41b22d9', 'https://auto.8891.com.tw/usedauto-infos-4004988.html?display__sale_code=&flow_id=24717d53-1216-4643-99c5-cfb72f7e0b63', 'https://auto.8891.com.tw/usedauto-infos-4003992.html?display__sale_code=&flow_id=3b580c24-85cb-4062-8c94-441cef5b9ccf', 'https://auto.8891.com.tw/usedauto-infos-4002794.html?display__sale_code=&flow_id=e6128f67-3765-45e1-bb5a-80c0c4ab6003', 'https://auto.8891.com.tw/usedauto-infos-3963772.html?display__sale_code=&flow_id=f62a4667-cf47-40c8-aeb8-3d1cba58417a', 'https://auto.8891.com.tw/usedauto-infos-3947364.html?display__sale_code=&flow_id=4420db16-5934-4b83-a5c5-b39feb8325be', 'https://auto.8891.com.tw/usedauto-infos-3955737.html?display__sale_code=&flow_id=7da10f6e-d8bd-42e3-943c-dbbc8884d71a', 'https://auto.8891.com.tw/usedauto-infos-3996258.html?display__sale_code=&flow_id=eef3c641-5365-4360-bedc-fcde7d01d489', 'https://auto.8891.com.tw/usedauto-infos-3996094.html?display__sale_code=&flow_id=34ab0e11-6a2a-400c-951d-7d92c4781db3', 'https://auto.8891.com.tw/usedauto-infos-3995398.html?display__sale_code=&flow_id=a78e86b0-feb1-4e88-965a-fba8b6025f41', 'https://auto.8891.com.tw/usedauto-infos-3986908.html?display__sale_code=&flow_id=9a550612-3b93-415f-a632-d0f10c5ff5ae', 'https://auto.8891.com.tw/usedauto-infos-3984390.html?display__sale_code=&flow_id=8bd4fa40-7f2a-4ae7-9f48-9ac1d5deac15', 'https://auto.8891.com.tw/usedauto-infos-3983215.html?display__sale_code=&flow_id=ac7fb746-63bd-455d-8cc5-27c6ff5ca490', 'https://auto.8891.com.tw/usedauto-infos-3981539.html?display__sale_code=&flow_id=70780e0e-cf1e-4fd3-ba44-2af817a6cfea', 'https://auto.8891.com.tw/usedauto-infos-3971677.html?display__sale_code=&flow_id=e8878342-9608-4eb0-bb65-2f8a43b9b258', 'https://auto.8891.com.tw/usedauto-infos-3970726.html?display__sale_code=&flow_id=1be12d3c-e3ed-4745-a548-667930dbd979', 'https://auto.8891.com.tw/usedauto-infos-3965471.html?display__sale_code=&flow_id=67a0181b-c486-4889-9933-2c24442e3319', 'https://auto.8891.com.tw/usedauto-infos-3955249.html?display__sale_code=&flow_id=64eb22b0-c81a-42f1-a12d-969cc99b99f5', 'https://auto.8891.com.tw/usedauto-infos-3939666.html?display__sale_code=&flow_id=ee62141f-b110-4f08-b083-73662d69db2b', 'https://auto.8891.com.tw/usedauto-infos-3946124.html?display__sale_code=&flow_id=ef824372-f08c-4a9d-bb79-a135872a8a9e', 'https://auto.8891.com.tw/usedauto-infos-3946055.html?display__sale_code=&flow_id=1f94a36e-27cc-479c-9767-1176b16f6d3b', 'https://auto.8891.com.tw/usedauto-infos-3695289.html?display__sale_code=&flow_id=89a2d772-2717-4a84-879a-8d756a5ffc6f', 'https://auto.8891.com.tw/usedauto-infos-3942046.html?display__sale_code=&flow_id=e40e358b-4865-4067-b28b-315334b74bf5', 'https://auto.8891.com.tw/usedauto-infos-3911503.html?display__sale_code=&flow_id=625d400b-8be0-4e42-8df6-1a09e9a0bed7', 'https://auto.8891.com.tw/usedauto-infos-3907873.html?display__sale_code=&flow_id=65bb89f8-86be-4ef5-a035-2a218849faac', 'https://auto.8891.com.tw/usedauto-infos-3899490.html?display__sale_code=&flow_id=9696ba37-a7fe-461b-9eb7-5aa5132694ef', 'https://auto.8891.com.tw/usedauto-infos-3899428.html?display__sale_code=&flow_id=36c70e8b-1f19-4760-8222-9197c662f352', 'https://auto.8891.com.tw/usedauto-infos-3897295.html?display__sale_code=&flow_id=a2d1b5cf-980d-4303-a22e-867e5ca9994a', 'https://auto.8891.com.tw/usedauto-infos-3863311.html?display__sale_code=&flow_id=eb12c24b-bfc4-4e3b-bd99-1373f62869fb', 'https://auto.8891.com.tw/usedauto-infos-3845882.html?display__sale_code=&flow_id=d249a5f3-8c6f-4a7c-9275-f9cd59f61457', 'https://auto.8891.com.tw/usedauto-infos-3842200.html?display__sale_code=&flow_id=638db668-3df8-429c-9e0b-880dc3e5faf1', 'https://auto.8891.com.tw/usedauto-infos-3792552.html?display__sale_code=&flow_id=06d9c2a3-f041-4ca1-85ae-c1171465a19c']
+Timeout loading page: https://auto.8891.com.tw/usedauto-infos-4003992.html?display__sale_code=&flow_id=3b580c24-85cb-4062-8c94-441cef5b9ccf
+Error scraping data from https://auto.8891.com.tw/usedauto-infos-4002794.html?display__sale_code=&flow_id=e6128f67-3765-45e1-bb5a-80c0c4ab6003: Message: target frame detached: received Inspector.detached event
+  (Session info: chrome=127.0.6533.100)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6134E9632+30946]
+	(No symbol) [0x00007FF61349E3C9]
+	(No symbol) [0x00007FF613396FDA]
+	(No symbol) [0x00007FF613381572]
+	(No symbol) [0x00007FF613380515]
+	(No symbol) [0x00007FF61337FD41]
+	(No symbol) [0x00007FF61337FC80]
+	(No symbol) [0x00007FF61337DE84]
+	(No symbol) [0x00007FF61337E46F]
+	(No symbol) [0x00007FF61338CC6E]
+	(No symbol) [0x00007FF6133A50FF]
+	(No symbol) [0x00007FF6133AAB7A]
+	(No symbol) [0x00007FF61337EBBA]
+	(No symbol) [0x00007FF6133A4C71]
+	(No symbol) [0x00007FF61342B39B]
+	(No symbol) [0x00007FF61340C813]
+	(No symbol) [0x00007FF6133DA6E5]
+	(No symbol) [0x00007FF6133DB021]
+	GetHandleVerifier [0x00007FF61361F83D+1301229]
+	GetHandleVerifier [0x00007FF61362BDB7+1351783]
+	GetHandleVerifier [0x00007FF613622A03+1313971]
+	GetHandleVerifier [0x00007FF61351DD06+245686]
+	(No symbol) [0x00007FF6134A758F]
+	(No symbol) [0x00007FF6134A3804]
+	(No symbol) [0x00007FF6134A3992]
+	(No symbol) [0x00007FF61349A3EF]
+	BaseThreadInitThunk [0x00007FFCDFEB7374+20]
+	RtlUserThreadStart [0x00007FFCDFFFCC91+33]
+
+Error scraping data from https://auto.8891.com.tw/usedauto-infos-3963772.html?display__sale_code=&flow_id=f62a4667-cf47-40c8-aeb8-3d1cba58417a: Message: disconnected: Unable to receive message from renderer
+  (failed to check if window was closed: disconnected: not connected to DevTools)
+  (Session info: chrome=127.0.6533.100)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6134E9632+30946]
+	(No symbol) [0x00007FF61349E3C9]
+	(No symbol) [0x00007FF613396FDA]
+	(No symbol) [0x00007FF61337FF7D]
+	(No symbol) [0x00007FF61337FC80]
+	(No symbol) [0x00007FF61337DE84]
+	(No symbol) [0x00007FF61337E46F]
+	(No symbol) [0x00007FF61339D233]
+	(No symbol) [0x00007FF61339FD31]
+	(No symbol) [0x00007FF61339FDD0]
+	(No symbol) [0x00007FF6133E7F69]
+	(No symbol) [0x00007FF6133E850C]
+	(No symbol) [0x00007FF61342DCB7]
+	(No symbol) [0x00007FF61340CAAF]
+	(No symbol) [0x00007FF61342B041]
+	(No symbol) [0x00007FF61340C813]
+	(No symbol) [0x00007FF6133DA6E5]
+	(No symbol) [0x00007FF6133DB021]
+	GetHandleVerifier [0x00007FF61361F83D+1301229]
+	GetHandleVerifier [0x00007FF61362BDB7+1351783]
+	GetHandleVerifier [0x00007FF613622A03+1313971]
+	GetHandleVerifier [0x00007FF61351DD06+245686]
+	(No symbol) [0x00007FF6134A758F]
+	(No symbol) [0x00007FF6134A3804]
+	(No symbol) [0x00007FF6134A3992]
+	(No symbol) [0x00007FF61349A3EF]
+	BaseThreadInitThunk [0x00007FFCDFEB7374+20]
+	RtlUserThreadStart [0x00007FFCDFFFCC91+33]
+
+Error scraping data from https://auto.8891.com.tw/usedauto-infos-3947364.html?display__sale_code=&flow_id=4420db16-5934-4b83-a5c5-b39feb8325be: Message: target frame detached: received Inspector.detached event
+  (Session info: chrome=127.0.6533.100)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6134E9632+30946]
+	(No symbol) [0x00007FF61349E3C9]
+	(No symbol) [0x00007FF613396FDA]
+	(No symbol) [0x00007FF613381572]
+	(No symbol) [0x00007FF613380515]
+	(No symbol) [0x00007FF61337FD41]
+	(No symbol) [0x00007FF61337FC80]
+	(No symbol) [0x00007FF61337DE84]
+	(No symbol) [0x00007FF61337E46F]
+	(No symbol) [0x00007FF61338CC6E]
+	(No symbol) [0x00007FF6133A50FF]
+	(No symbol) [0x00007FF6133AAB7A]
+	(No symbol) [0x00007FF61337EBBA]
+	(No symbol) [0x00007FF6133A4C71]
+	(No symbol) [0x00007FF61342B39B]
+	(No symbol) [0x00007FF61340C813]
+	(No symbol) [0x00007FF6133DA6E5]
+	(No symbol) [0x00007FF6133DB021]
+	GetHandleVerifier [0x00007FF61361F83D+1301229]
+	GetHandleVerifier [0x00007FF61362BDB7+1351783]
+	GetHandleVerifier [0x00007FF613622A03+1313971]
+	GetHandleVerifier [0x00007FF61351DD06+245686]
+	(No symbol) [0x00007FF6134A758F]
+	(No symbol) [0x00007FF6134A3804]
+	(No symbol) [0x00007FF6134A3992]
+	(No symbol) [0x00007FF61349A3EF]
+	BaseThreadInitThunk [0x00007FFCDFEB7374+20]
+	RtlUserThreadStart [0x00007FFCDFFFCC91+33]
+
+Timeout loading page: https://auto.8891.com.tw/usedauto-infos-3996258.html?display__sale_code=&flow_id=eef3c641-5365-4360-bedc-fcde7d01d489
+Timeout loading page: https://auto.8891.com.tw/usedauto-infos-3995398.html?display__sale_code=&flow_id=a78e86b0-feb1-4e88-965a-fba8b6025f41
+Timeout loading page: https://auto.8891.com.tw/usedauto-infos-3986908.html?display__sale_code=&flow_id=9a550612-3b93-415f-a632-d0f10c5ff5ae
+Timeout loading page: https://auto.8891.com.tw/usedauto-infos-3984390.html?display__sale_code=&flow_id=8bd4fa40-7f2a-4ae7-9f48-9ac1d5deac15
+Error scraping data from https://auto.8891.com.tw/usedauto-infos-3983215.html?display__sale_code=&flow_id=ac7fb746-63bd-455d-8cc5-27c6ff5ca490: ('Connection aborted.', ConnectionResetError(10054, 'ª∑∫›•Dæ˜§w±j®Ó√ˆ≥¨§@≠”≤{¶s™∫≥sΩu°C', None, 10054, None))
+Timeout loading page: https://auto.8891.com.tw/usedauto-infos-3970726.html?display__sale_code=&flow_id=1be12d3c-e3ed-4745-a548-667930dbd979
+Error scraping data from https://auto.8891.com.tw/usedauto-infos-3965471.html?display__sale_code=&flow_id=67a0181b-c486-4889-9933-2c24442e3319: ('Connection aborted.', ConnectionResetError(10054, 'ª∑∫›•Dæ˜§w±j®Ó√ˆ≥¨§@≠”≤{¶s™∫≥sΩu°C', None, 10054, None))
+Timeout loading page: https://auto.8891.com.tw/usedauto-infos-3963772.html?display__sale_code=&flow_id=f62a4667-cf47-40c8-aeb8-3d1cba58417a
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 115, in <module>
+    main()
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 85, in main
+    all_car_data = asyncio.run(fetch_all_car_data(all_car_url))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 40, in fetch_all_car_data
+    responses = await asyncio.gather(*tasks)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 23, in fetch_car_data
+    scraper = CarDataScraper()
+              ^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\DownloadHelper\CarPageHelper.py", line 14, in __init__
+    self.driver = webdriver.Chrome()
+                  ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 45, in __init__
+    super().__init__(
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 66, in __init__
+    super().__init__(command_executor=executor, options=options)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 212, in __init__
+    self.start_session(capabilities)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 299, in start_session
+    response = self.execute(Command.NEW_SESSION, caps)["value"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 354, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.SessionNotCreatedException: Message: session not created: Chrome failed to start: exited normally.
+  (session not created: DevToolsActivePort file doesn't exist)
+  (The process started from chrome location C:\Program Files\Google\Chrome\Application\chrome.exe is no longer running, so ChromeDriver is assuming that Chrome has crashed.)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6134E9632+30946]
+	(No symbol) [0x00007FF61349E3C9]
+	(No symbol) [0x00007FF613396FDA]
+	(No symbol) [0x00007FF6133D0847]
+	(No symbol) [0x00007FF6133CC4FA]
+	(No symbol) [0x00007FF6134178B9]
+	(No symbol) [0x00007FF613416F20]
+	(No symbol) [0x00007FF61340C813]
+	(No symbol) [0x00007FF6133DA6E5]
+	(No symbol) [0x00007FF6133DB021]
+	GetHandleVerifier [0x00007FF61361F83D+1301229]
+	GetHandleVerifier [0x00007FF61362BDB7+1351783]
+	GetHandleVerifier [0x00007FF613622A03+1313971]
+	GetHandleVerifier [0x00007FF61351DD06+245686]
+	(No symbol) [0x00007FF6134A758F]
+	(No symbol) [0x00007FF6134A3804]
+	(No symbol) [0x00007FF6134A3992]
+	(No symbol) [0x00007FF61349A3EF]
+	BaseThreadInitThunk [0x00007FFCDFEB7374+20]
+	RtlUserThreadStart [0x00007FFCDFFFCC91+33]
+
+"Error encountered while processing audi a1-sportback" 
+"Retrying audi a1-sportback (Attempt 1)" 
+Script1 receive argument: ['%a', '%b']
+Script1 process two argument: %a, %b
+Happen error: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF6134E9632+30946]
+	(No symbol) [0x00007FF61349E3C9]
+	(No symbol) [0x00007FF613396FDA]
+	(No symbol) [0x00007FF6133E822C]
+	(No symbol) [0x00007FF6133E850C]
+	(No symbol) [0x00007FF61342DCB7]
+	(No symbol) [0x00007FF61340CAAF]
+	(No symbol) [0x00007FF61342B041]
+	(No symbol) [0x00007FF61340C813]
+	(No symbol) [0x00007FF6133DA6E5]
+	(No symbol) [0x00007FF6133DB021]
+	GetHandleVerifier [0x00007FF61361F83D+1301229]
+	GetHandleVerifier [0x00007FF61362BDB7+1351783]
+	GetHandleVerifier [0x00007FF613622A03+1313971]
+	GetHandleVerifier [0x00007FF61351DD06+245686]
+	(No symbol) [0x00007FF6134A758F]
+	(No symbol) [0x00007FF6134A3804]
+	(No symbol) [0x00007FF6134A3992]
+	(No symbol) [0x00007FF61349A3EF]
+	BaseThreadInitThunk [0x00007FFCDFEB7374+20]
+	RtlUserThreadStart [0x00007FFCDFFFCC91+33]
+
+no more page, only scan 0 pages
+Total cost 18.472244262695312 second
+<class 'list'>
+[]
+All car data collected:
+[0 rows x 4 columns]
+Data successfully saved to SQL.
+ÁµêÊùüÊôÇÈñì:  1:20:33.17 
+Âü∑Ë°åÊôÇÈñì: 0 Â∞èÊôÇ 17 ÂàÜÈêò 27 Áßí
+C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py:7: DeprecationWarning: 
+Pyarrow will become a required dependency of pandas in the next major release of pandas (pandas 3.0),
+(to allow more performant data types, such as the Arrow string type, and better interoperability with other libraries)
+but was not found to be installed on your system.
+If this would cause problems for you,
+please provide us feedback at https://github.com/pandas-dev/pandas/issues/54466
+        
+  import pandas as pd
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 11, in <module>
+    from DownloadHelper.MainPageHelper import StringHelper
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\DownloadHelper\MainPageHelper.py", line 1, in <module>
+    from selenium import webdriver
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\__init__.py", line 20, in <module>
+    from .chrome.webdriver import WebDriver as Chrome  # noqa
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\chrome\webdriver.py", line 18, in <module>
+    from selenium.webdriver.chromium.webdriver import ChromiumDriver
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\chromium\webdriver.py", line 18, in <module>
+    from selenium.webdriver.chromium.remote_connection import ChromiumRemoteConnection
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\chromium\remote_connection.py", line 18, in <module>
+    from selenium.webdriver.remote.remote_connection import RemoteConnection
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 27, in <module>
+    import urllib3
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\__init__.py", line 13, in <module>
+    from .connectionpool import HTTPConnectionPool, HTTPSConnectionPool, connection_from_url
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py", line 13, in <module>
+    from .connection import (
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connection.py", line 15, in <module>
+    from .util.proxy import create_proxy_ssl_context
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\util\__init__.py", line 8, in <module>
+    from .ssl_ import (
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\util\ssl_.py", line 17, in <module>
+    from .url import BRACELESS_IPV6_ADDRZ_RE, IPV4_RE
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\util\url.py", line 71, in <module>
+    _HOST_PORT_RE = re.compile(_HOST_PORT_PAT, re.UNICODE | re.DOTALL)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\__init__.py", line 227, in compile
+    return _compile(pattern, flags)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\__init__.py", line 294, in _compile
+    p = _compiler.compile(pattern, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_compiler.py", line 745, in compile
+    p = _parser.parse(p, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 989, in parse
+    p = _parse_sub(source, state, flags & SRE_FLAG_VERBOSE, 0)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 464, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 872, in _parse
+    p = _parse_sub(source, state, sub_verbose, nested + 1)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 464, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 872, in _parse
+    p = _parse_sub(source, state, sub_verbose, nested + 1)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 464, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 872, in _parse
+    p = _parse_sub(source, state, sub_verbose, nested + 1)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 464, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 872, in _parse
+    p = _parse_sub(source, state, sub_verbose, nested + 1)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 464, in _parse_sub
+    itemsappend(_parse(source, state, verbose, nested + 1,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 570, in _parse
+    this = sourceget()
+           ^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\re\_parser.py", line 263, in get
+    self.__next()
+SystemError: error return without exception set
+"Error encountered while processing audi a1" 
+"Retrying audi a1 (Attempt 1)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 7, in <module>
+    import pandas as pd
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\__init__.py", line 62, in <module>
+    from pandas.core.api import (
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\api.py", line 9, in <module>
+    from pandas.core.dtypes.dtypes import (
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\dtypes\dtypes.py", line 24, in <module>
+    from pandas._libs import (
+ImportError: DLL load failed while importing lib: §¿≠∂¿…§”§p°AµL™kßπ¶®æﬁß@°C
+"Error encountered while processing %a %b" 
+"Retrying %a %b (Attempt 2)" 

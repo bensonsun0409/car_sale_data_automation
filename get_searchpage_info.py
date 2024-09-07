@@ -1,30 +1,49 @@
-from DownloadHelper.MainPageHelper import StringHelper
-from DownloadHelper.CarPageHelper import CarDataScraper
+import asyncio
+import aiohttp
+import logging
+import sys
+import gc
+import os
 import pandas as pd
 from sqlalchemy import create_engine
-import traceback
-import time
-import logging
 from sqlalchemy.exc import SQLAlchemyError
-import sys
+import traceback
+from DownloadHelper.MainPageHelper import StringHelper
+from DownloadHelper.CarPageHelper import CarDataScraper
+
+gc.collect()
 logging.basicConfig(filename='sql_error.log', level=logging.ERROR)
-def save_to_csv(result):
-    # df1 = pd.DataFrame({
-    #     'url': car_url,
-    #     'location': car_locations,
-    #     'views': car_views,
-        
-    # })
-    # df2 = pd.DataFrame(car_data)
-    # result = pd.concat([df1, df2], axis=1)
-    result.to_csv('car_info2.csv', index=False, encoding='utf-8-sig')
+
+semaphore = asyncio.Semaphore(3)  # 限制並發請求數量為3
+
+async def fetch_car_data(url, session):
+    async with semaphore:
+        scraper = CarDataScraper()
+        try:
+            car_data = await asyncio.wait_for(scraper.scrape_car_data(url), timeout=10)
+        except asyncio.TimeoutError:
+            logging.error(f"Timeout while scraping data for {url}")
+            car_data = {}
+        except Exception as e:
+            logging.error(f"Failed to scrape data for {url}: {str(e)}")
+            car_data = {}
+        finally:
+            scraper.close()
+        return car_data
+
+async def fetch_all_car_data(urls):
+    tasks = []
+    async with aiohttp.ClientSession() as session:
+        for url in urls:
+            tasks.append(fetch_car_data(url, session))
+        responses = await asyncio.gather(*tasks)
+        return responses
 
 def save_to_sql(df):
     engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
     try:
         df.to_sql(name='car_data', con=engine, if_exists='append', index=False) 
         print("Data successfully saved to SQL.")
-
     except SQLAlchemyError as e:
         error_message = "SQLAlchemy Error: Failed to save data to SQL."
         print(error_message)
@@ -33,9 +52,7 @@ def save_to_sql(df):
         error_message = "Unexpected error: Failed to save data to SQL."
         print(error_message)
         logging.error(f"{error_message}\n{str(e)}\n{traceback.format_exc()}")
-
     finally:
-        # Optionally, log the DataFrame that failed to save
         if not df.empty:
             logging.error(f"DataFrame content:\n{df.to_string()}")
 
@@ -43,44 +60,46 @@ def main():
     helper = StringHelper()
     args = sys.argv[1:]
 
-    print(f"Script1 接收到的參數：{args}")
-    # 使用反轉字串方法
+    print(f"Script1 receive argument: {args}")
     if len(args) == 1:
-        print(f"Script1 處理單個參數: {args[0]}")
+        print(f"Script1 process one argument: {args[0]}")
+        brand = args[0]
         all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(args[0])
     elif len(args) == 2:
-        print(f"Script1 處理兩個參數: {args[0]}, {args[1]}")
-        all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(args[0],args[1])
+        print(f"Script1 process two argument: {args[0]}, {args[1]}")
+        brand = args[0]
+        model = args[1]
+        all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(args[0], args[1])
     else:
-        print("Script1 錯誤：參數數量不正確")
+        print("Script1 error: argument number isn't right")
+        return
 
     print(type(all_car_url))
     print(all_car_url)
 
-    # scraper = CarDataScraper()
     all_car_data = []
-
     for url in all_car_url:
-        scraper = CarDataScraper()
-        car_data = scraper.scrape_car_data(url)
+        car_data = asyncio.run(fetch_car_data(url, session))
         all_car_data.append(car_data)
-        print(f"Processed URL: {url}")
-        print(f"Car Data: {car_data}")
+        if len(all_car_data) >= 100:
+            save_to_sql(pd.DataFrame(all_car_data))
+            all_car_data = []
+            gc.collect()
 
-        scraper.close()
+    if all_car_data:
+        save_to_sql(pd.DataFrame(all_car_data))
 
-    print("All car data collected:")
-    df1 = pd.DataFrame({
-        'url': all_car_url,
-        'location': all_car_locations,
-        'views': all_car_views,
-        'year': all_year
-    })
-    df2 = pd.DataFrame(all_car_data)
-    result = pd.concat([df1, df2], axis=1)
-    print(result)
-    save_to_sql(result)
-    save_to_csv(result)
+    file_path = 'scrawldata.txt'
+    file_exists = os.path.exists(file_path)
+    
+    mode = 'a' if file_exists else 'w'
+    
+    with open(file_path, mode, encoding='utf-8') as file:
+        str1 = brand + " "
+        if len(args) == 2:
+            str1 += model + " "
+        str1 += f'總共查詢了 {len(all_car_url)}'
+        file.write(str1 + '\n')
+
 if __name__ == "__main__":
     main()
-

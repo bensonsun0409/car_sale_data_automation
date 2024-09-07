@@ -69,10 +69,10 @@ class CarDataScraper:
             try:
                 todayDate = datetime.date.today()
                 car_data['scrawldate'] = todayDate
-                print(todayDate) 
-                print(car_data['scrawldate'])
+                # print(todayDate) 
+                # print(car_data['scrawldate'])
             except:
-                print("日期錯誤")
+                print("Scrawl date error")
             try:
                 title = self.driver.find_element(By.CLASS_NAME, 'breadcrumb')
                 link = title.find_elements(By.CLASS_NAME,'NormalLink')
@@ -160,7 +160,7 @@ class CarDataScraper:
             # 提取賣家信息
             try:
                 seller = self.driver.find_element(By.ID, 'tpl_show_market_section')
-                time.sleep(1)
+                time.sleep(2)
                 seller_text = seller.text.split('\n')
                 if seller_text:
                     if seller_text[0] == "8891嚴選商家實車 實況 實價":

@@ -102,3 +102,35 @@ mercedes-benz slr
 mercedes-benz sls
 mercedes-benz v
 mercedes-benz 古董車
+alfa-romeo
+aston-martin
+austin
+abarth
+bentley
+citroen
+ferrari
+fiat
+infiniti
+jaguar
+jeep
+lamborghini
+land-rover
+lexus
+lotus
+maserati
+mini
+mclaren
+opel
+peugeot
+porsche
+rolls-royce
+skoda
+smart
+tesla
+volvo
+toyota alphard
+toyota sienta
+toyota gr-yaris
+nissan gt-r
+volkswagen golf-gti
+volkswagen golf-r
