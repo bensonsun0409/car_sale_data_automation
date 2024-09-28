@@ -4,9 +4,21 @@ from bs4 import BeautifulSoup
 class WebScraper:
     @staticmethod
     def scrape_data(url):
+        # 設置 headers
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Referer': 'https://www.8891.com.tw/',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Cache-Control': 'max-age=0',
+        }
+
         try:
-            # 發送 GET 請求
-            response = requests.get(url)
+            # 發送 GET 請求，包含 headers
+            response = requests.get(url, headers=headers)
             response.raise_for_status()
 
             # 解析 HTML
@@ -30,6 +42,9 @@ class WebScraper:
             else:
                 return None, None
 
+        except requests.RequestException as e:
+            print(f"請求過程中發生錯誤: {str(e)}")
+            return None, None
         except Exception as e:
             print(f"爬取過程中發生錯誤: {str(e)}")
             return None, None
