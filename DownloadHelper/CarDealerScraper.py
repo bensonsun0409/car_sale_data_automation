@@ -6,37 +6,39 @@ import re
 
 class CarDealerScraper:
     def __init__(self):
+
         self.session = requests.Session()
 
     def scrape_dealers(self, url):
         response = self.session.get(url)
 
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            buz_list_items = soup.find_all('div', class_='buz-list-view')
+        try:
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text, 'html.parser')
+                buz_list_items = soup.find_all('div', class_='buz-list-view')
 
-            titles = []
-            links = []
-            ratings = []
-            rating_counts = []
-            in_stocks = []
-            in_stores = []
-            view_counts = []
+                titles = []
+                links = []
+                ratings = []
+                rating_counts = []
+                in_stocks = []
+                in_stores = []
+                view_counts = []
 
-            for item in buz_list_items:
-                dealer_info = self._parse_dealer_item(item)
-                if dealer_info:
-                    titles.append(dealer_info['標題'])
-                    links.append(dealer_info['連結'])
-                    ratings.append(dealer_info['評分'])
-                    rating_counts.append(dealer_info['評價數量'])
-                    in_stocks.append(dealer_info['在庫數量'])
-                    in_stores.append(dealer_info['在店數量'])
-                    view_counts.append(dealer_info['瀏覽數'])
+                for item in buz_list_items:
+                    dealer_info = self._parse_dealer_item(item)
+                    if dealer_info:
+                        titles.append(dealer_info['標題'])
+                        links.append(dealer_info['連結'])
+                        ratings.append(dealer_info['評分'])
+                        rating_counts.append(dealer_info['評價數量'])
+                        in_stocks.append(dealer_info['在庫數量'])
+                        in_stores.append(dealer_info['在店數量'])
+                        view_counts.append(dealer_info['瀏覽數'])
 
-            return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
-        else:
-            print("無法獲取網頁內容")
+                return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
+        except Exception as e:
+            print(e)
             return [], [], [], [], [], [], []
 
     def _parse_dealer_item(self, item):
@@ -98,13 +100,14 @@ class CarDealerScraper:
 
     def total_counts(self, url):
         response = self.session.get(url)
-
+        
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             total_data = soup.find('span', style="color:#C00;")
 
             return int(total_data.text)
-
         else:
+            print(response.status_code)
+            print(response.text)
             print("無法獲取網頁內容")
             return 0

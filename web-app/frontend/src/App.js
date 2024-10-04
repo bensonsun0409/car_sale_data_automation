@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import "./App.css";
-
+import Tabtable from "./component/Tabtable"
 const App = () => {
   const [images, setImages] = useState({});
   const [error, setError] = useState(""); // 用于存储错误消息
@@ -114,6 +114,9 @@ const App = () => {
           </Grid>
         )}
       </main>
+      <div>
+        <Tabtable/>
+      </div>
     </div>
   );
 };

@@ -314,3 +314,231 @@ Traceback (most recent call last):
 ImportError: DLL load failed while importing lib: §¿≠∂¿…§”§p°AµL™kßπ¶®æﬁß@°C
 "Error encountered while processing %a %b" 
 "Retrying %a %b (Attempt 2)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing audi a1" 
+"Retrying audi a1 (Attempt 1)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing %a %b" 
+"Retrying %a %b (Attempt 2)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing %a %b" 
+"Retrying %a %b (Attempt 3)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing %a %b" 
+ÁµêÊùüÊôÇÈñì: 21:09:14.11 
+Âü∑Ë°åÊôÇÈñì: 0 Â∞èÊôÇ 0 ÂàÜÈêò 35 Áßí
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing audi a1" 
+"Retrying audi a1 (Attempt 1)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing %a %b" 
+"Retrying %a %b (Attempt 2)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing %a %b" 
+"Retrying %a %b (Attempt 3)" 
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\get_searchpage_info.py", line 2, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+"Error encountered while processing %a %b" 
+ÁµêÊùüÊôÇÈñì: 21:11:29.19 
+Âü∑Ë°åÊôÇÈñì: 0 Â∞èÊôÇ 0 ÂàÜÈêò 35 Áßí
+Script1 ±µ¶¨®Ï™∫∞—º∆°G['audi', 'a1']
+Script1 ≥B≤z®‚≠”∞—º∆: audi, a1
+Traceback (most recent call last):
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1428, in getresponse
+    response.begin()
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] ª∑∫›•Dæ˜§w±j®Ó√ˆ≥¨§@≠”≤{¶s™∫≥sΩu°C
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 63, in <module>
+    main()
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 33, in main
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages(args[0],args[1])
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\DownloadHelper\MainPageHelper.py", line 78, in scan_all_pages
+    result = StringHelper.get_page_info(page, brand, model)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\DownloadHelper\MainPageHelper.py", line 21, in get_page_info
+    driver.get(url)
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 363, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 352, in execute
+    response = self.command_executor.execute(driver_command, params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 302, in execute
+    return self._request(command_info[0], url, body=data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 322, in _request
+    response = self._conn.request(method, url, body=body, headers=headers)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\_request_methods.py", line 144, in request
+    return self.request_encode_body(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\_request_methods.py", line 279, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\poolmanager.py", line 443, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    response = conn.getresponse()
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 464, in getresponse
+    httplib_response = super().getresponse()
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1430, in getresponse
+    self.close()
+  File "C:\Users\janet\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connection.py", line 273, in close
+    def close(self) -> None:
+
+KeyboardInterrupt
+^C"Error encountered while processing audi a1" 
+"Retrying audi a1 (Attempt 1)" 
+Script1 ±µ¶¨®Ï™∫∞—º∆°G['%a', '%b']
+Script1 ≥B≤z®‚≠”∞—º∆: %a, %b
+Happen error: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF70996B5D2+29090]
+	(No symbol) [0x00007FF7098DE689]
+	(No symbol) [0x00007FF70979B1CA]
+	(No symbol) [0x00007FF7097EEFD7]
+	(No symbol) [0x00007FF7097EF22C]
+	(No symbol) [0x00007FF7098397F7]
+	(No symbol) [0x00007FF70981672F]
+	(No symbol) [0x00007FF7098365D9]
+	(No symbol) [0x00007FF709816493]
+	(No symbol) [0x00007FF7097E09B1]
+	(No symbol) [0x00007FF7097E1B11]
+	GetHandleVerifier [0x00007FF709C88C5D+3295277]
+	GetHandleVerifier [0x00007FF709CD4843+3605523]
+	GetHandleVerifier [0x00007FF709CCA707+3564247]
+	GetHandleVerifier [0x00007FF709A26EB6+797318]
+	(No symbol) [0x00007FF7098E980F]
+	(No symbol) [0x00007FF7098E53F4]
+	(No symbol) [0x00007FF7098E5580]
+	(No symbol) [0x00007FF7098D4A1F]
+	BaseThreadInitThunk [0x00007FF871937344+20]
+	RtlUserThreadStart [0x00007FF8723426B1+33]
+
+no more page, only scan 0 pages
+Total cost 17.54245615005493 second
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 63, in <module>
+    main()
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 33, in main
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages(args[0],args[1])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 3)
+"Error encountered while processing %a %b" 
+"Retrying %a %b (Attempt 2)" 
+Script1 ±µ¶¨®Ï™∫∞—º∆°G['%a', '%b']
+Script1 ≥B≤z®‚≠”∞—º∆: %a, %b
+Happen error: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF70996B5D2+29090]
+	(No symbol) [0x00007FF7098DE689]
+	(No symbol) [0x00007FF70979B1CA]
+	(No symbol) [0x00007FF7097EEFD7]
+	(No symbol) [0x00007FF7097EF22C]
+	(No symbol) [0x00007FF7098397F7]
+	(No symbol) [0x00007FF70981672F]
+	(No symbol) [0x00007FF7098365D9]
+	(No symbol) [0x00007FF709816493]
+	(No symbol) [0x00007FF7097E09B1]
+	(No symbol) [0x00007FF7097E1B11]
+	GetHandleVerifier [0x00007FF709C88C5D+3295277]
+	GetHandleVerifier [0x00007FF709CD4843+3605523]
+	GetHandleVerifier [0x00007FF709CCA707+3564247]
+	GetHandleVerifier [0x00007FF709A26EB6+797318]
+	(No symbol) [0x00007FF7098E980F]
+	(No symbol) [0x00007FF7098E53F4]
+	(No symbol) [0x00007FF7098E5580]
+	(No symbol) [0x00007FF7098D4A1F]
+	BaseThreadInitThunk [0x00007FF871937344+20]
+	RtlUserThreadStart [0x00007FF8723426B1+33]
+
+no more page, only scan 0 pages
+Total cost 17.57990002632141 second
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 63, in <module>
+    main()
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 33, in main
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages(args[0],args[1])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 3)
+"Error encountered while processing %a %b" 
+"Retrying %a %b (Attempt 3)" 
+Script1 ±µ¶¨®Ï™∫∞—º∆°G['%a', '%b']
+Script1 ≥B≤z®‚≠”∞—º∆: %a, %b
+Happen error: Message: 
+Stacktrace:
+	GetHandleVerifier [0x00007FF70996B5D2+29090]
+	(No symbol) [0x00007FF7098DE689]
+	(No symbol) [0x00007FF70979B1CA]
+	(No symbol) [0x00007FF7097EEFD7]
+	(No symbol) [0x00007FF7097EF22C]
+	(No symbol) [0x00007FF7098397F7]
+	(No symbol) [0x00007FF70981672F]
+	(No symbol) [0x00007FF7098365D9]
+	(No symbol) [0x00007FF709816493]
+	(No symbol) [0x00007FF7097E09B1]
+	(No symbol) [0x00007FF7097E1B11]
+	GetHandleVerifier [0x00007FF709C88C5D+3295277]
+	GetHandleVerifier [0x00007FF709CD4843+3605523]
+	GetHandleVerifier [0x00007FF709CCA707+3564247]
+	GetHandleVerifier [0x00007FF709A26EB6+797318]
+	(No symbol) [0x00007FF7098E980F]
+	(No symbol) [0x00007FF7098E53F4]
+	(No symbol) [0x00007FF7098E5580]
+	(No symbol) [0x00007FF7098D4A1F]
+	BaseThreadInitThunk [0x00007FF871937344+20]
+	RtlUserThreadStart [0x00007FF8723426B1+33]
+
+no more page, only scan 0 pages
+Total cost 17.515319347381592 second
+Traceback (most recent call last):
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 63, in <module>
+    main()
+  File "C:\Users\janet\OneDrive\§Â•Û\±µÆ◊\car_sale_data_automation\main0809.py", line 33, in main
+    all_car_url, all_car_locations, all_car_views = helper.scan_all_pages(args[0],args[1])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: too many values to unpack (expected 3)
+"Error encountered while processing %a %b" 
+ÁµêÊùüÊôÇÈñì: 21:15:10.21 
+Âü∑Ë°åÊôÇÈñì: 0 Â∞èÊôÇ 2 ÂàÜÈêò 29 Áßí
