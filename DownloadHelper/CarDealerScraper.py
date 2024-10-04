@@ -1,29 +1,36 @@
-# car_dealer_scraper.py
-
 import requests
 from bs4 import BeautifulSoup
 import re
+import time
+
 
 class CarDealerScraper:
     def __init__(self):
 
         self.session = requests.Session()
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'Accept-Language': 'zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Referer': 'https://www.8891.com.tw/',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Cache-Control': 'max-age=0',
+        }
 
     def scrape_dealers(self, url):
-        response = self.session.get(url)
+        response = self.session.get(url, headers=self.headers)
 
         try:
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 buz_list_items = soup.find_all('div', class_='buz-list-view')
 
-                titles = []
-                links = []
-                ratings = []
-                rating_counts = []
-                in_stocks = []
-                in_stores = []
-                view_counts = []
+
+            titles, links, ratings, rating_counts = [], [], [], []
+            in_stocks, in_stores, view_counts = [], [], []
+
 
                 for item in buz_list_items:
                     dealer_info = self._parse_dealer_item(item)
@@ -36,10 +43,16 @@ class CarDealerScraper:
                         in_stores.append(dealer_info['在店數量'])
                         view_counts.append(dealer_info['瀏覽數'])
 
+
                 return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
         except Exception as e:
             print(e)
             return [], [], [], [], [], [], []
+
+            return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
+        else:
+            raise RequestError(f"無法獲取網頁內容, 狀態碼: {response.status_code}", response)
+
 
     def _parse_dealer_item(self, item):
         name_span = item.find('span', class_='fl mr5')
@@ -99,15 +112,21 @@ class CarDealerScraper:
         return view_count_span.text if view_count_span else None
 
     def total_counts(self, url):
-        response = self.session.get(url)
-        
+
+        response = self.session.get(url, headers=self.headers)
+
+
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             total_data = soup.find('span', style="color:#C00;")
 
-            return int(total_data.text)
+
+            return int(total_data.text) if total_data else 0
         else:
-            print(response.status_code)
-            print(response.text)
-            print("無法獲取網頁內容")
-            return 0
+            raise RequestError(f"無法獲取網頁內容, 狀態碼: {response.status_code}", response)
+
+
+class RequestError(Exception):
+    def __init__(self, message, response):
+        super().__init__(message)
+        self.response = response
