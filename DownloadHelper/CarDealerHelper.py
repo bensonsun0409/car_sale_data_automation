@@ -1,9 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
+import re
+
 
 class WebScraper:
-    @staticmethod
-    def scrape_data(url):
+
+    def extract_car_data(url):
         # 設置 headers
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
@@ -49,9 +51,83 @@ class WebScraper:
             print(f"爬取過程中發生錯誤: {str(e)}")
             return None, None
 
+    def extract_car_data_second_temp(url):
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+        }
+
+        try:
+            response = requests.get(url, headers=headers)
+            response.raise_for_status()
+            response.encoding = 'utf-8'
+            soup = BeautifulSoup(response.text, 'html.parser')
+
+            # print(f"Page title: {soup.title.string}")
+
+            sales_record = 'N/A'
+            address = 'N/A'
+
+            # 打印所有的 s-bus-box 內容，以便進行詳細分析
+            s_bus_boxes = soup.find_all('div', class_='s-bus-box')
+            for i, box in enumerate(s_bus_boxes):
+                # print(f"\ns-bus-box {i + 1}:")
+                # print(box.prettify())
+
+                # 在每個 s-bus-box 中尋找成交積分和賞車地址
+                sales_element = box.find(string=lambda text: text and '成交積分' in text)
+                if sales_element:
+                    print(f"Found sales element: {sales_element}")
+                    sales_match = re.search(r'\((\d+)輛\)', sales_element)
+                    if sales_match:
+                        sales_record = sales_match.group(1)
+                        print(f"Extracted sales record: {sales_record}")
+
+                address_element = box.find(string=lambda text: text and '賞車地址' in text)
+                if address_element:
+                    print(f"Found address element: {address_element}")
+                    address_span = address_element.find_next('span', class_='cf00 fb like-a-block')
+                    if address_span:
+                        address = address_span.text.strip()
+                        print(f"Extracted address: {address}")
+
+            # 如果仍然找不到，嘗試更寬鬆的搜索
+            if sales_record == 'N/A':
+                all_text = soup.get_text()
+                sales_match = re.search(r'成交積分.*?\((\d+)輛\)', all_text, re.DOTALL)
+                if sales_match:
+                    sales_record = sales_match.group(1)
+                    print(f"Found sales record in full text: {sales_record}")
+
+            if address == 'N/A':
+                address_match = re.search(r'賞車地址.*?：(.*?)(?:\n|$)', all_text, re.DOTALL)
+                if address_match:
+                    address = address_match.group(1).strip()
+                    print(f"Found address in full text: {address}")
+
+            return sales_record, address
+
+        except requests.RequestException as e:
+            print(f"Error fetching the webpage: {e}")
+            return 'N/A', 'N/A'
+
+    @staticmethod
+    def scrape_data(url):
+        if url.endswith("index.html"):
+            # 如果網址結尾是 index.html，修改成 onSale.html
+            modified_url = url.replace("index.html", "onSale.html")
+            sales_record, address = WebScraper.extract_car_data_second_temp(modified_url)
+            return sales_record, address
+        else:
+            sales_record, address = WebScraper.extract_car_data(url)
+            return sales_record, address
+
 # 使用示例
 if __name__ == "__main__":
-    url = "https://www.8891.com.tw/findBuz-info-201.html"
+    url = "https://sansin88.8891.com.tw/index.html"
     result = WebScraper.scrape_data(url)
     if result:
         transaction_record, address = result

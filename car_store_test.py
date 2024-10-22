@@ -102,7 +102,7 @@ def main():
     else:
         while current_value <= total_data:
             print(current_value)
-            url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}&'
+            url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}'
             titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
 
             # 將新的數據添加到對應的列表中
