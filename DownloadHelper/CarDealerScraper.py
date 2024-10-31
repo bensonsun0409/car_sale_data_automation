@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
-
+import logging
 
 class CarDealerScraper:
     def __init__(self):
@@ -43,7 +43,7 @@ class CarDealerScraper:
 
             return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
         except Exception as e:
-            print(e)
+            logging.info(e)
             return [], [], [], [], [], [], []
         # return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
         else:

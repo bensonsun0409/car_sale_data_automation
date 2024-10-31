@@ -1,4 +1,3 @@
-import requests
 import logging
 import sys
 import gc
@@ -10,78 +9,85 @@ import traceback
 from DownloadHelper.MainPageHelper import StringHelper
 from DownloadHelper.CarPageHelper import CarDataScraper
 import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+import re
+import logging
 
-gc.collect()
-logging.basicConfig(filename='sql_error.log', level=logging.ERROR)
+# Set up logging
+log_format = '%(asctime)s - %(levelname)s - %(message)s'
+logging.basicConfig(filename='script_execution.log', level=logging.INFO, format=log_format)
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(logging.Formatter(log_format))
+logging.getLogger().addHandler(console_handler)
 
 def save_to_csv(result):
     result.to_csv('car_info2.csv', index=False, encoding='utf-8-sig')
-def fetch_car_data(url):
-    scraper = CarDataScraper()
+
+def fetch_car_data(scraper, url):
     try:
-        # 假設 scrape_car_data 改成同步方法
         car_data = scraper.scrape_car_data(url)
+        logging.info(f"Successfully scraped data for {url}")
+        return car_data
     except Exception as e:
         logging.error(f"Failed to scrape data for {url}: {str(e)}")
-        car_data = {}
-    finally:
-        scraper.close()
-    return car_data
-
-def fetch_all_car_data(urls):
-    responses = []
-    for url in urls:
-        car_data = fetch_car_data(url)
-        responses.append(car_data)
-    return responses
+        return {}
 
 def save_to_sql(df):
     engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
     try:
         df.to_sql(name='car_data', con=engine, if_exists='append', index=False) 
-        print("Data successfully saved to SQL.")
+        logging.info("Data successfully saved to SQL.")
     except SQLAlchemyError as e:
-        error_message = "SQLAlchemy Error: Failed to save data to SQL."
-        print(e)
-        logging.error(f"{error_message}\n{str(e)}\n{traceback.format_exc()}")
+        logging.error(f"SQLAlchemy Error: Failed to save data to SQL.\n{str(e)}\n{traceback.format_exc()}")
     except Exception as e:
-        error_message = "Unexpected error: Failed to save data to SQL."
-        print(error_message)
-        logging.error(f"{error_message}\n{str(e)}\n{traceback.format_exc()}")
+        logging.error(f"Unexpected error: Failed to save data to SQL.\n{str(e)}\n{traceback.format_exc()}")
     finally:
         if not df.empty:
-            logging.error(f"DataFrame content:\n{df.to_string()}")
+            logging.debug(f"DataFrame content:\n{df.to_string()}")
+        del df
+        gc.collect()
+
+
 
 def main():
     start_time = time.time()
     helper = StringHelper()
     args = sys.argv[1:]
 
-    print(f"Script1 receive argument: {args}")
+    logging.info(f"Script1 receive argument: {args}")
+   
     if len(args) == 1:
-        print(f"Script1 process one argument: {args[0]}")
+        logging.info(f"Script1 process one argument: {args[0]}")
         brand = args[0]
         all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(args[0])
     elif len(args) == 2:
-        print(f"Script1 process two argument: {args[0]}, {args[1]}")
+        logging.info(f"Script1 process two argument: {args[0]}, {args[1]}")
         brand = args[0]
         model = args[1]
         all_car_url, all_car_locations, all_car_views, all_year = helper.scan_all_pages(args[0], args[1])
     else:
-        print("Script1 error: argument number isn't right")
+        logging.info("Script1 error: argument number isn't right")
         return
+   
 
-    print(type(all_car_url))
-    print(all_car_url)
-
+    logging.info(type(all_car_url))
+    logging.info(all_car_url)
+    scraper = CarDataScraper() 
     all_car_data = []
-    for url in all_car_url:
-        car_data = fetch_car_data(url)
-        all_car_data.append(car_data)
-        if len(all_car_data) >= 100:
-            save_to_sql(pd.DataFrame(all_car_data))
-            all_car_data = []
-            gc.collect()
+    try:
+        for url in all_car_url:
+            car_data = fetch_car_data(scraper, url)
+            all_car_data.append(car_data)
+    finally:
+        
+        scraper.close()     
+           
     df1 = pd.DataFrame({
         'url': all_car_url,
         'location': all_car_locations,
@@ -91,8 +97,9 @@ def main():
     df2 = pd.DataFrame(all_car_data)
     result = pd.concat([df1, df2], axis=1)
     
-    save_to_csv(result)
+    # save_to_csv(result)
     save_to_sql(result)
+    gc.collect()
     end_time = time.time()
     total_time = end_time - start_time
     file_path = 'scrawldata.txt'

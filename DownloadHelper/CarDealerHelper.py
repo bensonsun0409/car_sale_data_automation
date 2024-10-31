@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-
+import logging
 
 class WebScraper:
 
@@ -45,10 +45,10 @@ class WebScraper:
                 return None, None
 
         except requests.RequestException as e:
-            print(f"請求過程中發生錯誤: {str(e)}")
+            logging.info(f"請求過程中發生錯誤: {str(e)}")
             return None, None
         except Exception as e:
-            print(f"爬取過程中發生錯誤: {str(e)}")
+            logging.info(f"爬取過程中發生錯誤: {str(e)}")
             return None, None
 
     def extract_car_data_second_temp(url):
@@ -66,7 +66,7 @@ class WebScraper:
             response.encoding = 'utf-8'
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            # print(f"Page title: {soup.title.string}")
+            # logging.info(f"Page title: {soup.title.string}")
 
             sales_record = 'N/A'
             address = 'N/A'
@@ -74,25 +74,25 @@ class WebScraper:
             # 打印所有的 s-bus-box 內容，以便進行詳細分析
             s_bus_boxes = soup.find_all('div', class_='s-bus-box')
             for i, box in enumerate(s_bus_boxes):
-                # print(f"\ns-bus-box {i + 1}:")
-                # print(box.prettify())
+                # logging.info(f"\ns-bus-box {i + 1}:")
+                # logging.info(box.prettify())
 
                 # 在每個 s-bus-box 中尋找成交積分和賞車地址
                 sales_element = box.find(string=lambda text: text and '成交積分' in text)
                 if sales_element:
-                    print(f"Found sales element: {sales_element}")
+                    logging.info(f"Found sales element: {sales_element}")
                     sales_match = re.search(r'\((\d+)輛\)', sales_element)
                     if sales_match:
                         sales_record = sales_match.group(1)
-                        print(f"Extracted sales record: {sales_record}")
+                        logging.info(f"Extracted sales record: {sales_record}")
 
                 address_element = box.find(string=lambda text: text and '賞車地址' in text)
                 if address_element:
-                    print(f"Found address element: {address_element}")
+                    logging.info(f"Found address element: {address_element}")
                     address_span = address_element.find_next('span', class_='cf00 fb like-a-block')
                     if address_span:
                         address = address_span.text.strip()
-                        print(f"Extracted address: {address}")
+                        logging.info(f"Extracted address: {address}")
 
             # 如果仍然找不到，嘗試更寬鬆的搜索
             if sales_record == 'N/A':
@@ -100,18 +100,18 @@ class WebScraper:
                 sales_match = re.search(r'成交積分.*?\((\d+)輛\)', all_text, re.DOTALL)
                 if sales_match:
                     sales_record = sales_match.group(1)
-                    print(f"Found sales record in full text: {sales_record}")
+                    logging.info(f"Found sales record in full text: {sales_record}")
 
             if address == 'N/A':
                 address_match = re.search(r'賞車地址.*?：(.*?)(?:\n|$)', all_text, re.DOTALL)
                 if address_match:
                     address = address_match.group(1).strip()
-                    print(f"Found address in full text: {address}")
+                    logging.info(f"Found address in full text: {address}")
 
             return sales_record, address
 
         except requests.RequestException as e:
-            print(f"Error fetching the webpage: {e}")
+            logging.info(f"Error fetching the webpage: {e}")
             return 'N/A', 'N/A'
 
     @staticmethod
@@ -131,7 +131,7 @@ if __name__ == "__main__":
     result = WebScraper.scrape_data(url)
     if result:
         transaction_record, address = result
-        print(f"成交記錄: {transaction_record}")
-        print(f"商家地址: {address}")
+        logging.info(f"成交記錄: {transaction_record}")
+        logging.info(f"商家地址: {address}")
     else:
-        print("未找到所需數據")
+        logging.info("未找到所需數據")

@@ -7,7 +7,7 @@ import re
 import time
 import json
 import datetime
-
+import logging
 
 class CarDataScraper:
     def __init__(self):
@@ -69,10 +69,10 @@ class CarDataScraper:
             try:
                 todayDate = datetime.date.today()
                 car_data['scrawldate'] = todayDate
-                # print(todayDate) 
-                # print(car_data['scrawldate'])
+                # logging.info(todayDate) 
+                # logging.info(car_data['scrawldate'])
             except:
-                print("Scrawl date error")
+                logging.info("Scrawl date error")
             try:
                 title = self.driver.find_element(By.CLASS_NAME, 'breadcrumb')
                 link = title.find_elements(By.CLASS_NAME,'NormalLink')
@@ -187,7 +187,7 @@ class CarDataScraper:
                     if this_equip in equipment_dict:
                         equipment_dict[this_equip] = 'Y'
             except NoSuchElementException:
-                print("Equipment not found")
+                logging.info("Equipment not found")
             car_data.update(equipment_dict)
 
             
@@ -198,10 +198,10 @@ class CarDataScraper:
             return car_data
 
         except TimeoutException:
-            print(f"Timeout loading page: {url}")
+            logging.info(f"Timeout loading page: {url}")
             return None
         except Exception as e:
-            print(f"Error scraping data from {url}: {str(e)}")
+            logging.info(f"Error scraping data from {url}: {str(e)}")
             return None
 
     def close(self):
