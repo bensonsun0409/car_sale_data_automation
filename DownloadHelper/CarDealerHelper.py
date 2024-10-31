@@ -68,8 +68,8 @@ class WebScraper:
 
             # logging.info(f"Page title: {soup.title.string}")
 
-            sales_record = 'N/A'
-            address = 'N/A'
+            sales_record = None
+            address = None
 
             # 打印所有的 s-bus-box 內容，以便進行詳細分析
             s_bus_boxes = soup.find_all('div', class_='s-bus-box')
@@ -95,14 +95,14 @@ class WebScraper:
                         logging.info(f"Extracted address: {address}")
 
             # 如果仍然找不到，嘗試更寬鬆的搜索
-            if sales_record == 'N/A':
+            if sales_record == None:
                 all_text = soup.get_text()
                 sales_match = re.search(r'成交積分.*?\((\d+)輛\)', all_text, re.DOTALL)
                 if sales_match:
                     sales_record = sales_match.group(1)
                     logging.info(f"Found sales record in full text: {sales_record}")
 
-            if address == 'N/A':
+            if address == None:
                 address_match = re.search(r'賞車地址.*?：(.*?)(?:\n|$)', all_text, re.DOTALL)
                 if address_match:
                     address = address_match.group(1).strip()
@@ -112,7 +112,7 @@ class WebScraper:
 
         except requests.RequestException as e:
             logging.info(f"Error fetching the webpage: {e}")
-            return 'N/A', 'N/A'
+            return None, None
 
     @staticmethod
     def scrape_data(url):

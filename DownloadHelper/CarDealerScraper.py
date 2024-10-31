@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import time
 import logging
-
+import re
 class CarDealerScraper:
     def __init__(self):
 
@@ -18,6 +18,7 @@ class CarDealerScraper:
             'Upgrade-Insecure-Requests': '1',
             'Cache-Control': 'max-age=0',
         }
+
 
     def scrape_dealers(self, url):
         response = self.session.get(url, headers=self.headers)
@@ -97,9 +98,10 @@ class CarDealerScraper:
             return None, None
 
         stock_spans = stock_li.find_all('span', class_='stock-value')
-        in_stock = stock_spans[0].text if len(stock_spans) > 0 else None
-        in_store = stock_spans[1].text if len(stock_spans) > 1 else None
-
+        in_stock_text = stock_spans[0].text if len(stock_spans) > 0 else None
+        in_stock = in_stock_text[0:-1]
+        in_store_text = stock_spans[1].text if len(stock_spans) > 1 else None
+        in_store = in_store_text[0:-1]
         return in_stock, in_store
 
     def _parse_view_count(self, item):

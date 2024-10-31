@@ -1,82 +1,108 @@
-# import requests
-# from bs4 import BeautifulSoup
-# import re
-#
-# # 目標網頁 URL
-# url = "https://www.8891.com.tw/findBuz-index.html"
-#
-# # 發送 GET 請求獲取網頁內容
-# response = requests.get(url)
-#
-# # 確保請求成功
-# if response.status_code == 200:
-#     # 使用 BeautifulSoup 解析 HTML
-#     soup = BeautifulSoup(response.text, 'html.parser')
-#
-#     # 找到所有的車廠列表項
-#     buz_list_items = soup.find_all('div', class_='buz-list-view')
-#
-#     for item in buz_list_items:
-#         # 找到車廠名稱和連結
-#         name_span = item.find('span', class_='fl mr5')
-#         if name_span:
-#             link = name_span.find('a')
-#             if link:
-#                 title = link.get('title')
-#                 href = link.get('href')
-#
-#                 # 尋找評分
-#                 rating_div = item.find('div', class_='rating-star-total')
-#                 if rating_div:
-#                     rating_span = rating_div.find('span', class_='c404040')
-#                     rating = rating_span.text if rating_span else None
-#
-#                     # 尋找評價數量
-#                     rating_num_span = rating_div.find('span', class_='rating-num')
-#                     rating_count = rating_num_span.text if rating_num_span else None
-#                     if rating_count:
-#                         rating_count = re.search(r'\d+', rating_count).group()
-#                 else:
-#                     rating = None
-#                     rating_count = None
-#
-#                 # 尋找在庫和在店數量
-#                 stock_li = item.find('li', class_='stock')
-#                 if stock_li:
-#                     stock_spans = stock_li.find_all('span', class_='stock-value')
-#                     in_stock = stock_spans[0].text if len(stock_spans) > 0 else None
-#                     in_store = stock_spans[1].text if len(stock_spans) > 1 else None
-#                 else:
-#                     in_stock = None
-#                     in_store = None
-#
-#                 # 尋找瀏覽數
-#                 view_count_span = item.find('span', style="color: #333;")
-#                 view_count = view_count_span.text if view_count_span else None
-#
-#                 print(f"標題: {title}")
-#                 print(f"連結: {href}")
-#                 print(f"評分: {rating}")
-#                 print(f"評價數量: {rating_count}")
-#                 print(f"在庫數量: {in_stock}")
-#                 print(f"在店數量: {in_store}")
-#                 print(f"瀏覽數: {view_count}")
-#                 print("------------------------")
-# else:
-#     print("無法獲取網頁內容")
-
-
-# scrape_example.py
 from DownloadHelper.CarPageHelper import CarDataScraper
 from DownloadHelper.CarDealerScraper import CarDealerScraper
 from DownloadHelper.CarDealerHelper import WebScraper
+import logging
+from sqlalchemy import create_engine
+from sqlalchemy.exc import SQLAlchemyError
+import traceback
+import gc
+import pandas as pd
+# Set up logging
+log_format = '%(asctime)s - %(levelname)s - %(message)s'
+logging.basicConfig(filename='script_execution.log', level=logging.INFO, format=log_format)
+console_handler = logging.StreamHandler()
+console_handler.setFormatter(logging.Formatter(log_format))
+logging.getLogger().addHandler(console_handler)
+def convert_to_int(value):
+    """
+    將輸入值轉換為整數
+    - 移除非數字字符
+    - 處理空值或無效值
+    - 返回整數或 None
+    """
+   
+        # 如果是空值或非字符串，直接返回None
+    try:
+        # 如果是空值或空字串，返回 None
+        if pd.isna(value) or value is None or value == '':
+            return None
+        # 將值轉換為整數
+        return int(float(value))
+    except:
+        return None
+        
 
-def main():
+
+def create_dealer_dataframe(all_titles, all_links, all_ratings, all_rating_counts, 
+                          all_in_stocks, all_in_stores, all_view_counts, 
+                          all_transaction_record, all_address):
+    """
+    將所有列表轉換為DataFrame，並將指定欄位轉換為整數
+    """
+    try:
+        # 創建資料字典
+        data_dict = {
+            'title': all_titles,
+            'link': all_links,
+            'rating': all_ratings,
+            'rating_count': all_rating_counts,
+            'in_stock': all_in_stocks,
+            'in_store': all_in_stores,
+            'view_count': all_view_counts,
+            'transaction_record': all_transaction_record,
+            'address': all_address
+        }
+
+        # 檢查所有列表長度是否一致
+        lengths = [len(value) for value in data_dict.values()]
+        if len(set(lengths)) > 1:
+            logging.warning(f"列表長度不一致: {dict(zip(data_dict.keys(), lengths))}")
+            min_length = min(lengths)
+            for key in data_dict:
+                data_dict[key] = data_dict[key][:min_length]
+            logging.info(f"已將所有列表截斷至長度 {min_length}")
+
+        # 創建 DataFrame
+        df = pd.DataFrame(data_dict)
+        
+        # # 轉換數值欄位為整數
+        numeric_columns = ['rating', 'rating_count', 'in_stock', 'in_store', 'view_count']
+        for col in numeric_columns:
+            df[col] = df[col].apply(convert_to_int)
+            
+        #     # 顯示轉換結果的統計
+        #     null_count = df[col].isna().sum()
+        #     if null_count > 0:
+        #         logging.warning(f"{col} 欄位有 {null_count} 筆轉換為空值")
+        # df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric, downcast='integer', errors='coerce')
+        # # 移除重複資料
+        # duplicates = df.duplicated()
+        # if duplicates.any():
+        #     logging.warning(f"發現 {duplicates.sum()} 筆重複資料")
+        #     df = df.drop_duplicates()
+
+        # 基本統計資訊
+        logging.info("\n--- DataFrame 統計資訊 ---")
+        logging.info(f"總資料筆數: {len(df)}")
+        logging.info(f"欄位: {', '.join(df.columns)}")
+        logging.info(f"\n缺失值統計:\n{df.isnull().sum()}")
+        
+        return df
+    except Exception as e:
+        logging.error(f"創建 DataFrame 時發生錯誤: {str(e)}")
+        logging.error(traceback.format_exc())
+        return None
+def main(test_mode = True):
     url = "https://www.8891.com.tw/findBuz-index.html"
     # url = "https://www.8891.com.tw/findBuz-index.html?firstRow=30&totalRows=2199&"
     scraper = CarDealerScraper()
     total_data = scraper.total_counts(url)
-    print(total_data)
+
+    if test_mode:
+            logging.info("執行測試模式 - 只爬取前30筆資料")
+            total_data = 30
+    
+    logging.info(total_data)
     current_value = 0
     all_titles = []
     all_links = []
@@ -86,8 +112,9 @@ def main():
     all_in_stores = []
     all_view_counts = []
     if total_data % 30 == 0:
+        # while current_value < 30:
         while current_value < total_data:
-            print(current_value)
+            logging.info(current_value)
             url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}&'
             titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
             # 將新的數據添加到對應的列表中
@@ -101,7 +128,7 @@ def main():
             current_value += 30
     else:
         while current_value <= total_data:
-            print(current_value)
+            logging.info(current_value)
             url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}'
             titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
 
@@ -118,47 +145,77 @@ def main():
     # titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
     #
     # 打印結果
-    print(f'車行總數{len(all_titles)}')
+    logging.info(f'車行總數{len(all_titles)}')
     for i in range(len(all_titles)):
-        print(f"標題: {all_titles[i]}")
-        print(f"連結: {all_links[i]}")
-        print(f"評分: {all_ratings[i]}")
-        print(f"評價數量: {all_rating_counts[i]}")
-        print(f"在庫數量: {all_in_stocks[i]}")
-        print(f"在店數量: {all_in_stores[i]}")
-        print(f"瀏覽數: {all_view_counts[i]}")
-        print("------------------------")
+        logging.info(f"標題: {all_titles[i]}")
+        logging.info(f"連結: {all_links[i]}")
+        logging.info(f"評分: {all_ratings[i]}")
+        logging.info(f"評價數量: {all_rating_counts[i]}")
+        logging.info(f"在庫數量: {all_in_stocks[i]}")
+        logging.info(f"在店數量: {all_in_stores[i]}")
+        logging.info(f"瀏覽數: {all_view_counts[i]}")
+        logging.info("------------------------")
 
-    all_car_data = []
-    all_car_data2 = []
+    all_transaction_record = []
+    all_address = []
     for url in all_links:
         scraper = WebScraper()
         car_data = scraper.scrape_data(url)
         if car_data:
             transaction_record, address = car_data
-            all_car_data.append(transaction_record)
-            all_car_data2.append(address)
-            print(f"Processed URL: {url}")
-            print(f"Car Data: {transaction_record}")
-            print(f"Car Data: {address}")
+            all_transaction_record.append(transaction_record)
+            all_address.append(address)
+            logging.info(f"Processed URL: {url}")
+            logging.info(f"Car Data: {transaction_record}")
+            logging.info(f"Car Data: {address}")
         else:
-            print("未找到所需數據")
-    print(len(all_links))
-    print(len(all_car_data))
-    print(len(all_car_data2))
+            logging.info("未找到所需數據")
+    logging.info(len(all_links))
+    logging.info(len(all_transaction_record))
+    logging.info(len(all_address))
+    df = create_dealer_dataframe(
+        all_titles, all_links, all_ratings, all_rating_counts,
+        all_in_stocks, all_in_stores, all_view_counts,
+        all_transaction_record, all_address
+    )
 
+    if df is not None:
+        # 顯示前5筆資料
+        logging.info("\n--- 資料預覽 ---")
+        logging.info(df.head())
+        
+        # 基本統計描述
+        logging.info("\n--- 數值欄位統計描述 ---")
+        logging.info(df.describe())
+        
+        # 可以選擇將DataFrame存為CSV
+        try:
+            df.to_csv('car_dealers_data.csv', index=False, encoding='utf-8-sig')
+            logging.info("資料已儲存至 car_dealers_data.csv")
+        except Exception as e:
+            logging.error(f"儲存CSV時發生錯誤: {str(e)}")
+        
+        # 如果需要存入資料庫
+        try:
+            save_to_sql(df)
+        except Exception as e:
+            logging.error(f"存入資料庫時發生錯誤: {str(e)}")
 
-    # 您可以在這裡進行更多的數據處理
-    # 例如：計算平均評分
-    valid_ratings = [float(r) for r in all_ratings if r is not None]
-    avg_rating = sum(valid_ratings) / len(valid_ratings) if valid_ratings else 0
-    print(f"平均評分: {avg_rating:.2f}")
-
-    # 找出瀏覽數最高的經銷商
-    max_view_count = max([int(vc) for vc in all_view_counts if vc is not None], default=0)
-    max_view_index = all_view_counts.index(str(max_view_count))
-    print(f"瀏覽數最高的經銷商: {all_titles[max_view_index]} (瀏覽數: {max_view_count})")
+def save_to_sql(df):
+    engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
+    try:
+        df.to_sql(name='car_seller', con=engine, if_exists='append', index=False) 
+        logging.info("Data successfully saved to SQL.")
+    except SQLAlchemyError as e:
+        logging.error(f"SQLAlchemy Error: Failed to save data to SQL.\n{str(e)}\n{traceback.format_exc()}")
+    except Exception as e:
+        logging.error(f"Unexpected error: Failed to save data to SQL.\n{str(e)}\n{traceback.format_exc()}")
+    finally:
+        if not df.empty:
+            logging.debug(f"DataFrame content:\n{df.to_string()}")
+        del df
+        gc.collect()
 
 
 if __name__ == "__main__":
-    main()
+    main(test_mode=True)

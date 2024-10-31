@@ -1,68 +1,34 @@
-audi a1
-audi a1-sportback
-audi a3-5d
-audi a3-sedan
-audi a3-sportback
-audi a4-allroad
-audi a4-avant
-audi a4-sedan
-audi a5
-audi a5-coupe
-audi a5-sportback
-audi a6-allroad
-audi a6-avant
-audi a6-sedan
-audi a7-sportback
-audi a8
-audi a8l
-audi e-tron
-audi q2
-audi q3
-audi q3-sportback
-audi q5
-audi q5-sportback
-audi q7
-audi q8
-audi r8
-audi r8-coupe
-audi r8-spyder
-audi rs-3
-audi rs-4
-audi rs-5-coupe
-audi rs-5-sportback
-audi rs-6
-audi rs-7
-audi rs-q3
-audi s3
-audi s3-sportback
-audi s4-avant
-audi s4-sedan
-audi s5-coupe
-audi s5-sportback
-audi s6-avant
-audi s7-sportback
-audi s8
-audi sq2
-audi sq5
-audi sq7
-audi tt
-audi tt-rs
-audi tts
-BMW 1-series
-BMW 2-series
-BMW 3-series
-BMW 4-series
-BMW 5-series
-BMW 6-series
-BMW 7-series
-BMW 8-series
-BMW alpina
-BMW m
-BMW x1
-BMW x2
-BMW x3
-BMW x4
-BMW x5
-BMW x6
-BMW x7
-BMW z1
+alfa-romeo
+aston-martin
+abarth
+bentley
+citroen
+ferrari
+fiat
+infiniti
+jaguar
+jeep
+lamborghini
+land-rover
+lexus
+lotus
+maserati
+mini
+mclaren
+opel
+peugeot
+porsche
+rolls-royce
+skoda
+smart
+tesla
+volvo
+toyota alphard
+toyota sienta
+toyota gr-yaris
+nissan gt-r
+volkswagen golf-gti
+volkswagen golf-r
+audi 
+bmw
+mercedes-benz
