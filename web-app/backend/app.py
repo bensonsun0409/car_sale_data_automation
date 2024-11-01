@@ -208,6 +208,31 @@ def search():
             FROM car_info.car_data 
             WHERE scrawldate >= %s AND scrawldate <= %s
         """,
+        "table_avg_price":"""SELECT 
+            brand,
+            model,
+            year,
+            color,
+            AVG(CASE WHEN milage BETWEEN 0 AND 999 THEN price END) AS avg_price_0_999,
+            AVG(CASE WHEN milage BETWEEN 1000 AND 2999 THEN price END) AS avg_price_1000_2999,
+            AVG(CASE WHEN milage BETWEEN 3000 AND 5999 THEN price END) AS avg_price_3000_5999,
+            AVG(CASE WHEN milage BETWEEN 6000 AND 8999 THEN price END) AS avg_price_6000_8999,
+            AVG(CASE WHEN milage BETWEEN 9000 AND 9999 THEN price END) AS avg_price_9000_9999,
+            AVG(CASE WHEN milage BETWEEN 10000 AND 12999 THEN price END) AS avg_price_10000_12999,
+            AVG(CASE WHEN milage BETWEEN 13000 AND 15999 THEN price END) AS avg_price_13000_15999,
+            AVG(CASE WHEN milage BETWEEN 16000 AND 19999 THEN price END) AS avg_price_16000_19999,
+            AVG(CASE WHEN milage BETWEEN 20000 AND 28999 THEN price END) AS avg_price_20000_28999,
+            AVG(CASE WHEN milage BETWEEN 29000 AND 39999 THEN price END) AS avg_price_29000_39999,
+            AVG(CASE WHEN milage BETWEEN 40000 AND 59999 THEN price END) AS avg_price_40000_59999,
+            AVG(CASE WHEN milage BETWEEN 60000 AND 89999 THEN price END) AS avg_price_60000_89999,
+            AVG(CASE WHEN milage BETWEEN 90000 AND 99999 THEN price END) AS avg_price_90000_99999,
+            AVG(CASE WHEN milage >= 100000 THEN price END) AS avg_price_100000_plus
+            FROM 
+            cars
+            WHERE 
+            scrawldate >= %s AND scrawldate <= %s
+           
+"""
 
 
     }
@@ -286,9 +311,13 @@ def search():
             for key in queries:
                 queries[key] += f' AND seller_info LIKE  "%%{seller}%%" '        
 
+        
         for key in queries:
-            queries[key] += " GROUP BY scrawldate ORDER BY scrawldate"
-
+            if key != "table_avg_price":
+                queries[key] += " GROUP BY scrawldate ORDER BY scrawldate"
+            else:
+                queries[key] +=" GROUP BY brand, model, year, colorORDER BY brand, model, year, color;"
+        datas = {}
         images = {}
         print(queries)
         avg_cumulative_count_df = get_average_cumulative_count(
@@ -309,7 +338,9 @@ def search():
                     image = generate_plot(df, 'scrawldate', 'avg_views', '平均瀏覽數','日期','瀏覽數')
                 elif key == "avg_asknum":
                     image = generate_plot(df, 'scrawldate', 'avg_asknum', '平均諮詢數','日期','諮詢數')
-
+                elif key ==" table_avg_price":
+                    datas["table_avg_price"] = df.to_json(orient='records')
+                    
     
                 else:
                     continue
@@ -322,5 +353,6 @@ def search():
                 avg_cumulative_count_df, 'scrawldate', 'average_cumulative_count',
                 '每日平均累計刊登數', '日期', '平均累計刊登數'
             )
-        return jsonify({"success": True, "images": images})
+       
+        return jsonify({"success": True, "images": images, "data":datas})
 
