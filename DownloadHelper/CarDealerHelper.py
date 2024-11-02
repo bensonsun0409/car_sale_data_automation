@@ -33,16 +33,16 @@ class WebScraper:
             # 尋找商家地址
             address_element = soup.select_one('dl.item:has(dt.key.key_address) dd.value')
             address = address_element.text.strip().split('[')[0] if address_element else None
-
+            location = address[0:3] if address else None
             # 如果兩個值都找到了，返回它們；否則返回 None
             if transaction_record and address:
-                return transaction_record, address
+                return transaction_record, address, location
             elif transaction_record:
-                return transaction_record, None
+                return transaction_record, None, None
             elif address:
-                return None, address
+                return None, address, location
             else:
-                return None, None
+                return None, None, None
 
         except requests.RequestException as e:
             logging.info(f"請求過程中發生錯誤: {str(e)}")
@@ -70,7 +70,7 @@ class WebScraper:
 
             sales_record = None
             address = None
-
+            location=None
             # 打印所有的 s-bus-box 內容，以便進行詳細分析
             s_bus_boxes = soup.find_all('div', class_='s-bus-box')
             for i, box in enumerate(s_bus_boxes):
@@ -107,23 +107,26 @@ class WebScraper:
                 if address_match:
                     address = address_match.group(1).strip()
                     logging.info(f"Found address in full text: {address}")
+                     
+            if(address):
+                location = address[0:3]
 
-            return sales_record, address
+            return sales_record, address, location
 
         except requests.RequestException as e:
             logging.info(f"Error fetching the webpage: {e}")
-            return None, None
+            return None, None, None
 
     @staticmethod
     def scrape_data(url):
         if url.endswith("index.html"):
             # 如果網址結尾是 index.html，修改成 onSale.html
             modified_url = url.replace("index.html", "onSale.html")
-            sales_record, address = WebScraper.extract_car_data_second_temp(modified_url)
-            return sales_record, address
+            sales_record, address,location = WebScraper.extract_car_data_second_temp(modified_url)
+            return sales_record, address,location
         else:
-            sales_record, address = WebScraper.extract_car_data(url)
-            return sales_record, address
+            sales_record, address, location = WebScraper.extract_car_data(url)
+            return sales_record, address, location
 
 # 使用示例
 if __name__ == "__main__":

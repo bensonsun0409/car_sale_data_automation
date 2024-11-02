@@ -35,7 +35,7 @@ def convert_to_int(value):
 
 def create_dealer_dataframe(all_titles, all_links, all_ratings, all_rating_counts, 
                           all_in_stocks, all_in_stores, all_view_counts, 
-                          all_transaction_record, all_address):
+                          all_transaction_record, all_address,all_scrawldate,all_location):
     """
     將所有列表轉換為DataFrame，並將指定欄位轉換為整數
     """
@@ -50,7 +50,9 @@ def create_dealer_dataframe(all_titles, all_links, all_ratings, all_rating_count
             'in_store': all_in_stores,
             'view_count': all_view_counts,
             'transaction_record': all_transaction_record,
-            'address': all_address
+            'address': all_address,
+            'scrawldate' : all_scrawldate,
+            'location': all_location
         }
 
         # 檢查所有列表長度是否一致
@@ -69,17 +71,6 @@ def create_dealer_dataframe(all_titles, all_links, all_ratings, all_rating_count
         numeric_columns = ['rating', 'rating_count', 'in_stock', 'in_store', 'view_count']
         for col in numeric_columns:
             df[col] = df[col].apply(convert_to_int)
-            
-        #     # 顯示轉換結果的統計
-        #     null_count = df[col].isna().sum()
-        #     if null_count > 0:
-        #         logging.warning(f"{col} 欄位有 {null_count} 筆轉換為空值")
-        # df[numeric_columns] = df[numeric_columns].apply(pd.to_numeric, downcast='integer', errors='coerce')
-        # # 移除重複資料
-        # duplicates = df.duplicated()
-        # if duplicates.any():
-        #     logging.warning(f"發現 {duplicates.sum()} 筆重複資料")
-        #     df = df.drop_duplicates()
 
         # 基本統計資訊
         logging.info("\n--- DataFrame 統計資訊 ---")
@@ -111,12 +102,14 @@ def main(test_mode = True):
     all_in_stocks = []
     all_in_stores = []
     all_view_counts = []
+    all_scrawldate = []
+  
     if total_data % 30 == 0:
         # while current_value < 30:
         while current_value < total_data:
             logging.info(current_value)
             url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}&'
-            titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
+            titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts, scrawldate = scraper.scrape_dealers(url)
             # 將新的數據添加到對應的列表中
             all_titles.extend(titles)
             all_links.extend(links)
@@ -125,12 +118,14 @@ def main(test_mode = True):
             all_in_stocks.extend(in_stocks)
             all_in_stores.extend(in_stores)
             all_view_counts.extend(view_counts)
+            all_scrawldate.extend(scrawldate)
+            
             current_value += 30
     else:
         while current_value <= total_data:
             logging.info(current_value)
             url = f'https://www.8891.com.tw/findBuz-index.html?firstRow={current_value}&totalRows={total_data}'
-            titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
+            titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts,strawldate = scraper.scrape_dealers(url)
 
             # 將新的數據添加到對應的列表中
             all_titles.extend(titles)
@@ -140,7 +135,7 @@ def main(test_mode = True):
             all_in_stocks.extend(in_stocks)
             all_in_stores.extend(in_stores)
             all_view_counts.extend(view_counts)
-
+            all_scrawldate.extend(strawldate)
             current_value += 30
     # titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts = scraper.scrape_dealers(url)
     #
@@ -154,20 +149,24 @@ def main(test_mode = True):
         logging.info(f"在庫數量: {all_in_stocks[i]}")
         logging.info(f"在店數量: {all_in_stores[i]}")
         logging.info(f"瀏覽數: {all_view_counts[i]}")
+
         logging.info("------------------------")
 
     all_transaction_record = []
     all_address = []
+    all_location = []
     for url in all_links:
         scraper = WebScraper()
         car_data = scraper.scrape_data(url)
         if car_data:
-            transaction_record, address = car_data
+            transaction_record, address,location = car_data
             all_transaction_record.append(transaction_record)
             all_address.append(address)
+            all_location.append(location)
             logging.info(f"Processed URL: {url}")
             logging.info(f"Car Data: {transaction_record}")
             logging.info(f"Car Data: {address}")
+            logging.info(f"location: {location}")
         else:
             logging.info("未找到所需數據")
     logging.info(len(all_links))
@@ -176,7 +175,7 @@ def main(test_mode = True):
     df = create_dealer_dataframe(
         all_titles, all_links, all_ratings, all_rating_counts,
         all_in_stocks, all_in_stores, all_view_counts,
-        all_transaction_record, all_address
+        all_transaction_record, all_address,all_scrawldate,all_location
     )
 
     if df is not None:

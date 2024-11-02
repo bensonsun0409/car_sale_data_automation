@@ -4,6 +4,7 @@ import re
 import time
 import logging
 import re
+import datetime
 class CarDealerScraper:
     def __init__(self):
 
@@ -30,7 +31,8 @@ class CarDealerScraper:
 
             titles, links, ratings, rating_counts = [], [], [], []
             in_stocks, in_stores, view_counts = [], [], []
-
+            todayDate = datetime.date.today()
+            scrawldate=[]
             for item in buz_list_items:
                 dealer_info = self._parse_dealer_item(item)
                 if dealer_info:
@@ -41,11 +43,13 @@ class CarDealerScraper:
                     in_stocks.append(dealer_info['在庫數量'])
                     in_stores.append(dealer_info['在店數量'])
                     view_counts.append(dealer_info['瀏覽數'])
+                    scrawldate.append(todayDate)
+                   
 
-            return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
+            return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts,scrawldate
         except Exception as e:
             logging.info(e)
-            return [], [], [], [], [], [], []
+            return [], [], [], [], [], [], [],[]
         # return titles, links, ratings, rating_counts, in_stocks, in_stores, view_counts
         else:
             raise RequestError(f"無法獲取網頁內容, 狀態碼: {response.status_code}", response)
@@ -73,7 +77,8 @@ class CarDealerScraper:
             "評價數量": rating_count,
             "在庫數量": in_stock,
             "在店數量": in_store,
-            "瀏覽數": view_count
+            "瀏覽數": view_count,
+            
         }
 
     def _parse_rating(self, item):

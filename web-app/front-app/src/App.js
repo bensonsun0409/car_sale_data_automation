@@ -5,14 +5,22 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import "./App.css";
-import Tabtable from "./component/Tabtable"
+import Tabtable from "./component/Tabtable";
+
 const App = () => {
   const [images, setImages] = useState({});
   const [error, setError] = useState(""); // 用于存储错误消息
   const [searched, setSearched] = useState(false); // 用于追踪用户是否进行了搜索
   const [loading, setLoading] = useState(false); // 用于追踪搜索请求的状态
-  const [tableData,setTableData] = useState({})
-
+  const [tableData, setTableData] = useState({});
+  const imageTitles = {
+    average_price: "平均價格",
+    listing_count: "刊登數量",
+    avg_views: "平均瀏覽數",
+    avg_asknum: "平均諮詢數",
+    avg_market_date: "平均上架天數",
+  };
+  
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -41,30 +49,25 @@ const App = () => {
       if (data["success"]) {
         const filteredImages = {};
         for (const [key, value] of Object.entries(data["images"])) {
-          if (value) { // 检查图像数据是否存在
+          console.log(`Key: ${key}, Value: ${value}`); // 调试输出
+          if (value) {
             filteredImages[key] = value;
           }
-
         }
 
         setImages(filteredImages); // 设置过滤后的 images
-        let parsedTableData = [];
-        console.log(data.datas.table_avg_price)
-        console.log(typeof data.datas.table_avg_price )
-        if (typeof data.datas.table_avg_price === 'string') {
-          try {
-            parsedTableData = JSON.parse(data["tabledatas"]);
-            console.log('parsedTableData:', parsedTableData);
-          } catch (parseError) {
-            console.error("解析 tableData 時出錯:", parseError);
-            setError("資料格式錯誤。");
-          }
-        } else if (Array.isArray(data["tabledatas"])) {
-          parsedTableData = data["tabledatas"];
-        } else {
-          console.warn("未知的 tableData 格式:", data["tabledatas"]);
-        }
-        setTableData(parsedTableData);
+        console.log(data["tabledata"]["table_avg_price"])
+        // 解析 tableData
+        const parsedTableData = {
+          price_all: data["tabledata"]["table_avg_price"] ? JSON.parse(data["tabledata"]["table_avg_price"]) : [],
+          car_detail: data["tabledata"]["car_detail"] ? JSON.parse(data["tabledata"]["car_detail"]) : [],
+          avg_ask_price: data["tabledata"]["avg_ask_price"] ? JSON.parse(data["tabledata"]["avg_ask_price"]) : [],
+          avg_day_on_market: data["tabledata"]["avg_day_on_market"] ? JSON.parse(data["tabledata"]["avg_day_on_market"]) : [],
+          seller_info: data["tabledata"]["seller_info"] ? JSON.parse(data["tabledata"]["seller_info"]) : []
+        };
+        // console.log(price_all)
+
+        setTableData(parsedTableData); // 将解析后的数据存入 state
       } else {
         setImages({}); // 清空 images
         setError(data["message"] || "An error occurred."); // 设置错误消息
@@ -72,7 +75,7 @@ const App = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
       setImages({}); // 清空 images
-      setTableData([]);
+      setTableData({}); // 确保清空 tableData
       setError(error["message"] || "An error occurred.");
     } finally {
       setLoading(false); // 搜索请求结束
@@ -112,8 +115,9 @@ const App = () => {
         {hasImages && (
           <Grid container spacing={2}>
             {Object.keys(images).map((key, index) => (
+              
               <Grid item xs={12} sm={6} md={4} key={index}>
-                <h3>{key}</h3>
+               <h3>{imageTitles[key] || key}</h3>
                 <Box sx={{ maxWidth: "100%" }}>
                   <img
                     src={`data:image/png;base64,${images[key]}`}
@@ -136,7 +140,7 @@ const App = () => {
         )}
       </main>
       <div>
-        <Tabtable data={tableData}/>
+        <Tabtable tableData={tableData} /> {/* 将整个 tableData 传递 */}
       </div>
     </div>
   );
