@@ -97,6 +97,7 @@ const FilterForm = ({ onSearch }) => {
       ...(carBrand && { carBrand }),
       ...(selectedBrands && { selectedBrands }),
       ...(carModel && { carModel }),
+      ...(selectedModels && { selectedModels }),
       ...(color && { color }),
       ...(lowMilage && { lowMilage }),
       ...(highMilage && { highMilage }),

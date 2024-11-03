@@ -17,20 +17,24 @@ id=root
 在裡面建立table名為car_data
 column 資料如下
 
-price varchar(45) 
-verify_tag varchar(45) 
-milage int 
+id int AI PK 
+url varchar(200) 
+location varchar(45) 
+views int 
 year varchar(45) 
 color varchar(45) 
+milage int 
+price varchar(45) 
 video varchar(45) 
 ask_num varchar(45) 
 car_location varchar(45) 
 seller_info varchar(45) 
-url varchar(200) 
-location varchar(45) 
-views int 
 brand varchar(45) 
-car_id varchar(45) PK 
+model varchar(45) 
+car_id varchar(45) 
+product_year varchar(45) 
+verify_tag varchar(45) 
+scrawldate date
 胎壓偵測 varchar(45) 
 動態穩定系統 varchar(45) 
 防盜系統 varchar(45) 
@@ -50,4 +54,19 @@ LED頭燈 varchar(45)
 恆溫空調 varchar(45) 
 自動停車系統 varchar(45) 
 電動天窗 varchar(45) 
-真皮/皮革座椅 varchar(45)
+真皮/皮革座椅 varchar(45) 
+
+
+另一table名為car_seller
+id int AI PK 
+title varchar(45) 
+rating int 
+rating_count int 
+link varchar(100) 
+in_stock int 
+in_store int 
+view_count int 
+transaction_record int 
+address varchar(45) 
+scrawldate date 
+location varchar(45)

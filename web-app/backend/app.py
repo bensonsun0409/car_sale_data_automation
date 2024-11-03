@@ -34,19 +34,17 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 
-def fetch_data(query, params):
+def fetch_data(query, params=None):  # Make params optional
     conn = mysql.connection
     cursor = conn.cursor()
 
     try:
-        cursor.execute(query, params)
+        cursor.execute(query, params) if params else cursor.execute(query)
         data = cursor.fetchall()
         columns = [desc[0] for desc in cursor.description]
         return pd.DataFrame(data, columns=columns)
     except Error as e:
         logging.error("Error executing query: %s", e)
-        logging.error("Query: %s", query)
-        logging.error("Parameters: %s", params)
         raise
 
 def generate_plot(dataframe, x_col, y_col, title, x_col_name, y_col_name):
@@ -96,41 +94,87 @@ def search_seller(startdate,enddate):
     except Exception as e:
         logging.error("Error in search_seller: %s", e)
         return None 
-
-@app.route('/search', methods=['POST'])
-def search():
-    
-        filters = request.json
-        startDate=filters.get('startDate')
-        endDate = filters.get('endDate')
-        selected_brand = filters.get('selectedBrands', [])
-        selected_model = filters.get('selectedModels', [])
-        production_year = filters.get('productYear')
-        lowMilage = filters.get('lowMilage')
-        highMilage = filters.get('highMilage')
-        video = filters.get('video')
-        verify = filters.get('verify')
-        selectedEquip = filters.get('selectedEquip')
-        color = filters.get('color')
-        city = filters.get('city')
-        loc = filters.get('loc')
-        year = filters.get('typeYear')
-        lowView = filters.get('lowView')
-        highView = filters.get('highView')
-        lowAsknum = filters.get('lowAsknum')
-        highAsknum = filters.get('highAsknum')
-        seller = filters.get('seller')
-        
-        queries = {
-        "avg_market_date":"""WITH distinct_data AS (
+def total_onMarket_day_ralative(startDate, endDate, selected_brand, selected_model, production_year, lowMilage, highMilage, video, verify, selectedEquip, 
+                                color, city, loc, year, lowView, highView, lowAsknum, highAsknum, seller, datas, images):
+    beforeData = f"""WITH distinct_data AS (
             SELECT DISTINCT
                 car_id,
                 scrawldate
             FROM 
                 car_info.car_data
             WHERE 
-                scrawldate >= %s AND scrawldate <= %s
-        ),
+                scrawldate >= "{startDate}" AND scrawldate <= "{endDate}"
+        """
+       
+        
+
+    if production_year:
+        beforeData += f" AND product_year in ({production_year})"
+            
+    if year:
+        beforeData += f" AND year in ({year})"
+    if len(selected_brand) != 0:
+        # 使用列表推導式來將每個品牌轉換成 LIKE 條件
+        like_conditions = [f"LOWER(brand) LIKE '%{brand.lower()}%'" for brand in selected_brand]
+        
+        # 使用 OR 來串聯所有 LIKE 條件，並添加到查詢字串中
+        str1 = f" AND ({' OR '.join(like_conditions)})"
+        
+        # 將查詢字串添加到主查詢中
+        beforeData += str1
+
+        if len(selected_model) != 0:
+            model_list = [f"'{model}'" for model in selected_model]
+            
+            # 使用 join 來串聯品牌，形成 IN 的條件
+            str2 = f" AND model IN ({', '.join(model_list)})"
+
+            
+            beforeData += str2
+
+
+
+        
+    if lowMilage and highMilage:
+        beforeData += f" AND milage >= {lowMilage} "
+    if highMilage:
+  
+        beforeData += f" AND milage <= {highMilage}"
+    
+    if video:
+        beforeData += f' AND video = "Y" '
+    
+    if verify:
+        beforeData += f' AND verify_tag = "Y" '
+
+    if len(selectedEquip)!=0:
+        for equip in selectedEquip:
+            equip=equip.strip()
+            print(equip)
+            beforeData += f' AND {equip} = "Y" '
+    if city:
+        beforeData += f" AND location in ({city}) "
+    if color:
+        beforeData += f" AND color in ({color}) "
+    if loc:
+        beforeData += f' AND car_location in ({loc}) '
+    if lowView :
+        
+        beforeData += f" AND views >= {lowView} "
+    if highView :
+        beforeData +=f" AND views <= {highView} "
+    
+    if lowAsknum :
+        
+        beforeData += f" AND ask_num >= {lowAsknum} "
+    if highAsknum:
+        beforeData += f" AND ask_num <= {highAsknum}"
+    if seller:
+        
+        beforeData += f' AND seller_info LIKE  "%%{seller}%%" '        
+
+    queries = {
+        "avg_market_date":f"""{beforeData}),
         date_records AS (
             SELECT 
                 car_id,
@@ -147,7 +191,7 @@ def search():
                 CASE
                     WHEN next_date IS NULL THEN
                         CASE
-                            WHEN scrawldate != %s THEN DATEDIFF(%s, scrawldate)
+                            WHEN scrawldate != "{endDate}" THEN DATEDIFF("{endDate}", scrawldate)
                             ELSE 1
                         END
                     ELSE DATEDIFF(next_date, scrawldate)
@@ -174,11 +218,201 @@ def search():
         join total_count b 
         on a.car_id=b.car_id
         )
-        select scrawldate,AVG(day_count) as avg_market_date from newtable 
-        where scrawldate >= %s AND scrawldate <= %s 
-        """
+        select scrawldate,AVG(day_count) as avg_market_date from newtable """,
+
+
+        "avg_ask_price":f"""{beforeData}),
+        date_records AS (
+            SELECT 
+                car_id,
+                scrawldate,
+                LEAD(scrawldate) OVER (PARTITION BY car_id ORDER BY scrawldate) AS next_date
+            FROM 
+                distinct_data
+        ),
+        scrawltable AS (
+            SELECT 
+                car_id,
+                scrawldate,
+                next_date,
+                CASE
+                    WHEN next_date IS NULL THEN
+                        CASE
+                            WHEN scrawldate != "{endDate}" THEN DATEDIFF("{endDate}", scrawldate)
+                            ELSE 1
+                        END
+                    ELSE DATEDIFF(next_date, scrawldate)
+                END AS day_diff
+            FROM 
+                date_records
+        ),
+        total_count AS (
+            SELECT car_id,
+                SUM(
+                    CASE
+                        WHEN day_diff >= 3 THEN 3
+                        ELSE day_diff
+                    END
+                ) AS total_day_count
+            FROM 
+                scrawltable
+            GROUP BY 
+                car_id
+        ),
+
+        newtable as(
+        SELECT distinct a.car_id,
+            a.brand,
+            a.model,
+            a.year,
+            a.product_year,
+            a.color,
+            a.milage,
+            a.price,
+            b.total_day_count
+            
+        FROM 
+            car_info.car_data as a
+            join total_count as b
+            on a.car_id = b.car_id
+        WHERE 
+            a.car_id IS NOT NULL
+            and b.total_day_count > 0
         
-        ,
+        )
+        select brand as 品牌,
+        model as 型號,
+        year as 年份,
+        color as 顏色,
+        milage as 里程數,
+        count(*) as 上架數量,
+        round(avg(price),2) as 平均價格,
+        round(avg(total_day_count),2) as 平均上架天數
+        from newtable
+        where price is not null
+        """,
+        
+        "avg_day_on_market":f"""{beforeData}
+        ),
+        date_records AS (
+            SELECT 
+                car_id,
+                scrawldate,
+                LEAD(scrawldate) OVER (PARTITION BY car_id ORDER BY scrawldate) AS next_date
+            FROM 
+                distinct_data
+        ),
+        scrawltable AS (
+            SELECT 
+                car_id,
+                scrawldate,
+                next_date,
+                CASE
+                    WHEN next_date IS NULL THEN
+                        CASE
+                            WHEN scrawldate != "{endDate}" THEN DATEDIFF("{endDate}", scrawldate)
+                            ELSE 1
+                        END
+                    ELSE DATEDIFF(next_date, scrawldate)
+                END AS day_diff
+            FROM 
+                date_records
+        ),
+        total_count AS (
+            SELECT car_id,
+                SUM(
+                    CASE
+                        WHEN day_diff >= 3 THEN 3
+                        ELSE day_diff
+                    END
+                ) AS total_day_count
+            FROM 
+                scrawltable
+            GROUP BY 
+                car_id
+        ),
+        newtable as
+		(
+        select distinct  a.car_id,a.brand,a.model,a.year,a.color,a.milage,b.total_day_count from car_info.car_data as a
+        join total_count b 
+        on a.car_id=b.car_id
+        )
+        SELECT 
+            brand as 品牌,
+            model as 型號,
+            year as 年份,
+            color as 顏色,
+            ROUND(AVG(CASE WHEN milage BETWEEN 0 AND 999 THEN total_day_count END), 1) AS `999公里內`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 1000 AND 2999 THEN total_day_count END), 1) AS `1000-2999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 3000 AND 5999 THEN total_day_count END), 1) AS `3000-5999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 6000 AND 8999 THEN total_day_count END), 1) AS `6000-8999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 9000 AND 9999 THEN total_day_count END), 1) AS `9000-9999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 10000 AND 12999 THEN total_day_count END), 1) AS `10000-12999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 13000 AND 15999 THEN total_day_count END), 1) AS `13000-15999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 16000 AND 19999 THEN total_day_count END), 1) AS `16000-19999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 20000 AND 28999 THEN total_day_count END), 1) AS `20000-28999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 29000 AND 39999 THEN total_day_count END), 1) AS `29000-39999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 40000 AND 59999 THEN total_day_count END), 1) AS `40000-59999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 60000 AND 89999 THEN total_day_count END), 1) AS `60000-89999公里`,
+            ROUND(AVG(CASE WHEN milage BETWEEN 90000 AND 99999 THEN total_day_count END), 1) AS `90000-99999公里`,
+            ROUND(AVG(CASE WHEN milage >= 100000 THEN total_day_count END), 1) AS `10萬公里以上`
+
+        FROM 
+            newtable
+        WHERE
+            brand is not null"""}
+        
+    for key in queries:
+        if  key =="avg_day_on_market"  :
+            queries[key] +=" GROUP BY brand, model, year, color ORDER BY brand, model, year, color;"
+        elif key =="avg_ask_price" :
+            queries[key] += "group by brand,model,year,color,milage order by brand,model,year,color,milage"
+        elif key =="avg_market_date":
+            queries[key] += "group by scrawldate order by scrawldate"
+    print("avg_market_date 的query sql指令: "+ queries["avg_market_date"])
+    for key, query in queries.items():
+        try:
+            if key =="avg_day_on_market":
+                df = fetch_data(query)
+                datas["avg_day_on_market"] = df.to_json(orient='records', force_ascii=False)
+            elif key == "avg_market_date":
+                df = fetch_data(query)
+                image = generate_plot(df, 'scrawldate', 'avg_market_date', '平均上架天數', '日期', '天數')
+                images[key] = image
+            elif key == "avg_ask_price":
+                df = fetch_data(query)
+                datas["avg_ask_price"] = df.to_json(orient='records', force_ascii=False)       
+        except Exception as e:
+            logging.info(f"Error in {key} : {e}")                            
+
+    return datas, images
+
+@app.route('/search', methods=['POST'])
+def search():
+    
+        filters = request.json
+        startDate=filters.get('startDate')
+        endDate = filters.get('endDate')
+        selected_brand = filters.get('selectedBrands', [])
+        selected_model = filters.get('selectedModels', [])
+        production_year = filters.get('productYear')
+        lowMilage = filters.get('lowMilage')
+        highMilage = filters.get('highMilage')
+        video = filters.get('video')
+        verify = filters.get('verify')
+        selectedEquip = filters.get('selectedEquip')
+        color = filters.get('color')
+        city = filters.get('city')
+        loc = filters.get('loc')
+        year = filters.get('typeYear')
+        lowView = filters.get('lowView')
+        highView = filters.get('highView')
+        lowAsknum = filters.get('lowAsknum')
+        highAsknum = filters.get('highAsknum')
+        seller = filters.get('seller')
+        
+        queries = {
+ 
         "average_price": """
             SELECT scrawldate, AVG(price) as 平均價格 
             FROM car_info.car_data 
@@ -271,165 +505,7 @@ def search():
 FROM 
     car_info.car_data
 WHERE 
-    scrawldate >= %s AND scrawldate <= %s""",
-
-    "avg_ask_price":"""
-        WITH distinct_data AS (
-            SELECT DISTINCT
-                car_id,
-                scrawldate
-            FROM 
-                car_info.car_data
-            WHERE 
-                scrawldate >= %s AND scrawldate <= %s
-        ),
-        date_records AS (
-            SELECT 
-                car_id,
-                scrawldate,
-                LEAD(scrawldate) OVER (PARTITION BY car_id ORDER BY scrawldate) AS next_date
-            FROM 
-                distinct_data
-        ),
-        scrawltable AS (
-            SELECT 
-                car_id,
-                scrawldate,
-                next_date,
-                CASE
-                    WHEN next_date IS NULL THEN
-                        CASE
-                            WHEN scrawldate != %s THEN DATEDIFF(%s, scrawldate)
-                            ELSE 1
-                        END
-                    ELSE DATEDIFF(next_date, scrawldate)
-                END AS day_diff
-            FROM 
-                date_records
-        ),
-        total_count AS (
-            SELECT car_id,
-                SUM(
-                    CASE
-                        WHEN day_diff >= 3 THEN 3
-                        ELSE day_diff
-                    END
-                ) AS total_day_count
-            FROM 
-                scrawltable
-            GROUP BY 
-                car_id
-        ),
-
-        newtable as(
-        SELECT distinct a.car_id,
-            a.brand,
-            a.model,
-            a.year,
-            a.product_year,
-            a.color,
-            a.milage,
-            a.price,
-            b.total_day_count
-            
-        FROM 
-            car_info.car_data as a
-            join total_count as b
-            on a.car_id = b.car_id
-        WHERE 
-            a.car_id IS NOT NULL
-            and b.total_day_count > 0
-        
-        )
-        select brand as 品牌,
-        model as 型號,
-        year as 年份,
-        color as 顏色,
-        milage as 里程數,
-        count(*) as 上架數量,
-        round(avg(price),2) as 平均價格,
-        round(avg(total_day_count),2) as 平均上架天數
-        from newtable
-        where price is not null
-        """
-   ,
-        "avg_day_on_market":"""WITH distinct_data AS (
-            SELECT DISTINCT
-                car_id,
-                scrawldate
-            FROM 
-                car_info.car_data
-            WHERE 
-                scrawldate >= %s AND scrawldate <= %s
-        ),
-        date_records AS (
-            SELECT 
-                car_id,
-                scrawldate,
-                LEAD(scrawldate) OVER (PARTITION BY car_id ORDER BY scrawldate) AS next_date
-            FROM 
-                distinct_data
-        ),
-        scrawltable AS (
-            SELECT 
-                car_id,
-                scrawldate,
-                next_date,
-                CASE
-                    WHEN next_date IS NULL THEN
-                        CASE
-                            WHEN scrawldate != %s THEN DATEDIFF(%s, scrawldate)
-                            ELSE 1
-                        END
-                    ELSE DATEDIFF(next_date, scrawldate)
-                END AS day_diff
-            FROM 
-                date_records
-        ),
-        total_count AS (
-            SELECT car_id,
-                SUM(
-                    CASE
-                        WHEN day_diff >= 3 THEN 3
-                        ELSE day_diff
-                    END
-                ) AS total_day_count
-            FROM 
-                scrawltable
-            GROUP BY 
-                car_id
-        ),
-        newtable as
-		(
-        select distinct  a.car_id,a.brand,a.model,a.year,a.color,a.milage,b.total_day_count from car_info.car_data as a
-        join total_count b 
-        on a.car_id=b.car_id
-        )
-        SELECT 
-            brand as 品牌,
-            model as 型號,
-            year as 年份,
-            color as 顏色,
-            ROUND(AVG(CASE WHEN milage BETWEEN 0 AND 999 THEN total_day_count END), 1) AS `999公里內`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 1000 AND 2999 THEN total_day_count END), 1) AS `1000-2999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 3000 AND 5999 THEN total_day_count END), 1) AS `3000-5999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 6000 AND 8999 THEN total_day_count END), 1) AS `6000-8999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 9000 AND 9999 THEN total_day_count END), 1) AS `9000-9999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 10000 AND 12999 THEN total_day_count END), 1) AS `10000-12999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 13000 AND 15999 THEN total_day_count END), 1) AS `13000-15999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 16000 AND 19999 THEN total_day_count END), 1) AS `16000-19999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 20000 AND 28999 THEN total_day_count END), 1) AS `20000-28999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 29000 AND 39999 THEN total_day_count END), 1) AS `29000-39999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 40000 AND 59999 THEN total_day_count END), 1) AS `40000-59999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 60000 AND 89999 THEN total_day_count END), 1) AS `60000-89999公里`,
-            ROUND(AVG(CASE WHEN milage BETWEEN 90000 AND 99999 THEN total_day_count END), 1) AS `90000-99999公里`,
-            ROUND(AVG(CASE WHEN milage >= 100000 THEN total_day_count END), 1) AS `10萬公里以上`
-
-        FROM 
-            newtable
-        WHERE
-            brand is not null
-"""
+    scrawldate >= %s AND scrawldate <= %s"""
 
     }
 
@@ -444,33 +520,36 @@ WHERE
             for key in queries:
                 queries[key] += f" AND year in ({year})"
         if len(selected_brand) != 0:
+            # 使用列表推導式來將每個品牌包裹在單引號中
             for key in queries:
-                str1=f' AND brand in (select brand from car_info.car_data where'
-                like_conditions = []
-                for i in selected_brand:
-                    like_conditions.append(f' brand LIKE "%%{i}%%"')
-
-                # 將 LIKE 條件串聯起來並添加到查詢字串中
-                str1 += " OR ".join(like_conditions) + ')'
-
+                brands_list = [f"'{brand}'" for brand in selected_brand]
                 
-                # 將查詢字串添加到主查詢中
+                # 使用 join 來串聯品牌，形成 IN 的條件
+                str1 = f" AND brand IN ({', '.join(brands_list)})"
+
+                    
+                    # 將查詢字串添加到主查詢中
                 queries[key] += str1
 
                 if len(selected_model) != 0:
-                    str2=f' AND model in (select model from car_info.car_data where'
-                    model_like_conditions = []
-                    for i in selected_brand:
-                        model_like_conditions.append(f' model LIKE "%%{i}%%"')
-                    str2 += " OR ".join(model_like_conditions) + ')'
-                    queries[key] += str2
+                    model_list = [f"'{model}'" for model in selected_model]
+                    
+                    # 使用 join 來串聯品牌，形成 IN 的條件
+                    str2 = f" AND model IN ({', '.join(model_list)})"
+
+                    
+                    queries[key]  += str2
 
 
 
             
-        if lowMilage and highMilage:
+        if lowMilage :
             for key in queries:
-                queries[key] += f" AND milage >= {lowMilage} and milage <= {highMilage}"
+                queries[key] += f" AND milage >= {lowMilage} "
+        if highMilage:
+            for key in queries:
+                queries[key] += f" AND milage <= {highMilage}"
+
         
         if video:
             for key in queries:
@@ -495,29 +574,30 @@ WHERE
         if loc:
             for key in queries:
                 queries[key] += f' AND car_location in ({loc}) '
-        if lowView and highView:
+        if lowView :
             for key in queries:
-                queries[key] += f" AND views >= {lowView} and views <= {highView}"
+                queries[key] += f" AND views >= {lowView} "
+        if highView:
+            for key in queries:
+                queries[key] += f"and views <= {highView}"
         
-        if lowAsknum and highAsknum:
+        if lowAsknum:
             for key in queries:
-                queries[key] += f" AND ask_num >= {lowAsknum} and ask_num <= {highAsknum}"
+                queries[key] += f" AND ask_num >= {lowAsknum} "
+        if highAsknum:
+            for key in queries:
+                queries[key] +=f" and ask_num <= {highAsknum} "
         if seller:
             for key in queries:
                 queries[key] += f' AND seller_info LIKE  "%%{seller}%%" '        
 
         
         for key in queries:
-            if key == "table_avg_price" or key =="avg_day_on_market"  :
-                queries[key] +=" GROUP BY brand, model, year, color ORDER BY brand, model, year, color;"
-            
-            elif key == "car_detail":
-                continue
-            elif key =="avg_ask_price" :
-                queries[key] += "group by brand,model,year,color,milage order by brand,model,year,color,milage"
-            
 
-            
+            if key == "car_detail":
+                continue
+            elif key =="table_avg_price":
+                queries[key] += " GROUP BY brand, model,year,color ORDER BY brand, model,year,color "
             else:
                 queries[key] += " GROUP BY scrawldate ORDER BY scrawldate"
         datas = {}
@@ -552,20 +632,8 @@ WHERE
                             datas["table_avg_price"] = df.to_json(orient='records', force_ascii=False)
                         elif key =="car_detail":
                             datas["car_detail"] = df.to_json(orient='records', force_ascii=False)
-                elif key =="avg_market_date":
-                    print(key)
-                    uni_params = [startDate,endDate,endDate,endDate,startDate,endDate]
-                    df = fetch_data(query, tuple(uni_params))
-                    image = generate_plot(df, 'scrawldate', 'avg_market_date', '平均上架天數', '日期', '天數')
-                    images[key] = image
-                elif key =="avg_ask_price":
-                    uni_params = [startDate,endDate,endDate,endDate]
-                    df = fetch_data(query, tuple(uni_params))
-                    datas["avg_ask_price"] = df.to_json(orient='records', force_ascii=False)
-                elif key =="avg_day_on_market":
-                    uni_params = [startDate,endDate,endDate,endDate]
-                    df = fetch_data(query, tuple(uni_params))
-                    datas["avg_day_on_market"] = df.to_json(orient='records', force_ascii=False)
+
+
             
 
                 
@@ -573,7 +641,9 @@ WHERE
             except Exception as e:
                 logging.error(f"Error in handle_queries for {key}: %s", e)
                 return jsonify({"success": False, "message": str(e)})
- 
-       
+        
+        datas, images = total_onMarket_day_ralative(startDate, endDate, selected_brand, selected_model, production_year, lowMilage, highMilage, video, verify, selectedEquip, 
+                                    color, city, loc, year, lowView, highView, lowAsknum, highAsknum, seller, datas, images)
+        print(datas["avg_ask_price"]) 
         return jsonify({"success": True, "images": images, "tabledata":datas})
 

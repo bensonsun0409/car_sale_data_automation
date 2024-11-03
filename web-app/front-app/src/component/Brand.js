@@ -21,7 +21,6 @@ const MenuProps = {
     },
   },
 };
-
 export default function Brand() {
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedModels, setSelectedModels] = useState([]);
@@ -32,8 +31,7 @@ export default function Brand() {
     } = event;
     setSelectedBrands(typeof value === "string" ? value.split(",") : value);
 
-    // Reset models when brands change
-    setSelectedModels([]);
+    
   };
 
   const handleModelChange = (event) => {
@@ -42,16 +40,13 @@ export default function Brand() {
     } = event;
     setSelectedModels(typeof value === "string" ? value.split(",") : value);
   };
-
   const getModels = () => {
-    if (!selectedBrands.length) return []; // If no brands selected, return empty array
     let models = [];
     selectedBrands.forEach((brand) => {
-      models = [...models, ...(brandsAndModels[brand] || [])]; // Check if brand has models
+      models = [...models, ...brandsAndModels[brand]];
     });
-    return [...new Set(models)]; // Remove duplicates
+    return [...new Set(models)]; // 移除重複的車型
   };
-
   return (
     <div>
       <FormControl sx={{ width: 250, marginBottom: 2 }}>
@@ -74,7 +69,6 @@ export default function Brand() {
           ))}
         </Select>
       </FormControl>
-      
       <FormControl sx={{ width: 250 }}>
         <InputLabel id="model-select-label">車型</InputLabel>
         <Select
@@ -98,3 +92,103 @@ export default function Brand() {
     </div>
   );
 }
+
+// const names = {
+//   "Alfa Romeo":["156","159","4C","Brera","GIULIA","Giulietta","Mito","Spider","Stelvio"],
+//   "Aston Martin":["DB11","DB7","DB9","DBS","DBX","Rapide","V8 Vantage","Vanquish","Vantage","Virage"],
+//   "Audi":["A1","A1 Sportback","A3 5D","A3 Sedan","A3 Sportback","A4 Allroad","A4 Avant","A4 Sedan","A5","A5 Coupe","A5 Sportback","A6 Allroad",
+//     "A6 Avant","A6 Sedan","A7","A7",
+//   ],
+//   "Austin",
+//   "Abarth",
+//   "Bentley",
+//   "BMW",
+//   "BRABUS",
+//   "Citroen/雪鐵龍",
+//   "Ferrai/法拉利",
+//   "Fiat",
+//   "Infiniti",
+//   "Jaguar",
+//   "Jeep/吉普",
+//   "Lamborghini/藍寶堅尼",
+//   "Land Rover",
+//   "Lexus",
+//   "Lotus/蓮花",
+//   "Mercedes-Benz/賓士",
+//   "Maserati/瑪莎拉蒂",
+//   "Mini",
+//   "McLaren/麥拉倫",
+//   "Opel/歐寶",
+//   "Peugeot",
+//   "Porsche/保時捷",
+//   "Rolls-Royce/勞斯萊斯",
+//   "Skoda",
+//   "Smart",
+//   "Tesla/特斯拉",
+//   "Volvo",
+//   "Toyota",
+//   "Nissan",
+//   "Mitsubishi",
+//   "VW",
+// };
+
+// export default function Brand() {
+//   const [personName, setPersonName] = React.useState([]);
+
+//   const handleChange = (event) => {
+//     const {
+//       target: { value },
+//     } = event;
+//     setPersonName(
+//       // On autofill we get a stringified value.
+//       typeof value === "string" ? value.split(",") : value
+//     );
+//   };
+
+//   return (
+//     <div>
+//       <FormControl sx={{ width: 250 }}>
+//         <InputLabel id="demo-multiple-checkbox-label">品牌</InputLabel>
+//         <Select
+//           labelId="demo-multiple-checkbox-label"
+//           id="demo-multiple-checkbox"
+//           multiple
+//           value={personName}
+//           onChange={handleChange}
+//           input={<OutlinedInput label="Tag" />}
+//           renderValue={(selected) => selected.join(", ")}
+//           MenuProps={MenuProps}
+//         >
+//           {names.map((name) => (
+//             <MenuItem key={name} value={name}>
+//               <Checkbox checked={personName.indexOf(name) > -1} />
+//               <ListItemText primary={name} />
+//             </MenuItem>
+//           ))}
+
+//         </Select>
+//       </FormControl>
+//       <FormControl sx={{ width: 250 }}>
+//         <InputLabel id="demo-multiple-checkbox-label">車型</InputLabel>
+//         <Select
+//           labelId="demo-multiple-checkbox-label"
+//           id="demo-multiple-checkbox"
+//           multiple
+//           value={personName}
+//           onChange={handleChange}
+//           input={<OutlinedInput label="Tag" />}
+//           renderValue={(selected) => selected.join(", ")}
+//           MenuProps={MenuProps}
+//         >
+//           {names.map((name) => (
+//             <MenuItem key={name} value={name}>
+//               <Checkbox checked={personName.indexOf(name) > -1} />
+//               <ListItemText primary={name} />
+//             </MenuItem>
+//           ))}
+
+//         </Select>
+//       </FormControl>
+//     </div>
+//   );
+// }

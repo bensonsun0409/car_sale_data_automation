@@ -21,16 +21,26 @@ LED頭燈
 真皮/皮革座椅
 """
 city="""
-鹽埕區、鼓山區、左營區、楠梓區、三民區、新興區、前金區、苓雅區、前鎮區、旗津區、小港區、鳳山區、林園區、大寮區、大樹區、大社區、仁武區、鳥松區、岡山區、橋頭區、燕巢區、田寮區、阿蓮區、路竹區、湖內區、茄萣區、永安區、彌陀區、梓官區、旗山區、美濃區、六龜區、甲仙區、杉林區、內門區、茂林區、桃源區、那瑪夏區"""
-# 將多行字符串分割成列表，去除每行的空白字符
-car_model_list = car_models.strip().split('\n')
+南竿鄉、北竿鄉、莒光鄉、東引鄉
+"""
+
+# car_model_list = car_models.strip().split('\n')
 city_list = city.strip().split('、')
 # 格式化列表中的每個元素為帶引號的字符串
-format_city=[f'"{city}"' for city in city_list]
-format_city_link=",\n".join(format_city)
-print(format_city_link)
-# formatted_car_model_list = [f'"{model}"' for model in car_model_list]
+format_city=[f"{color}" for color in city_list]
+# format_city_link=",".join(city_list)
+print(format_city)
+# # formatted_car_model_list = [f'"{model}"' for model in car_model_list]
+# color_list = color.replace("'", "").strip().split('\n')
 
+# 格式化列表中的每個元素為帶引號的字符串
+# formatted_color = [f'"{color.strip()}"' for color in color_list if color.strip()]  # 檢查是否為空字符串
+
+# 用逗號連接列表中的元素
+# formatted_color_link = ",\n".join(formatted_color)
+
+# 輸出結果
+# print(formatted_color_link)
 # # 將格式化後的列表元素用逗號和換行符號分隔
 # formatted_car_models = ",\n".join(formatted_car_model_list)
 
