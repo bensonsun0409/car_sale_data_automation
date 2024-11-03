@@ -29,17 +29,17 @@ logging.getLogger().addHandler(console_handler)
 def save_to_csv(result):
     result.to_csv('car_info2.csv', index=False, encoding='utf-8-sig')
 
-def fetch_car_data(scraper, url):
+def fetch_car_data(scraper, url, index,count_url):
     try:
         car_data = scraper.scrape_car_data(url)
-        logging.info(f"Successfully scraped data for {url}")
+        logging.info(f"Successfully scraped data for URL {index + 1} / {count_url}: {url}")
         return car_data
     except Exception as e:
         logging.error(f"Failed to scrape data for {url}: {str(e)}")
         return {}
 
 def save_to_sql(df):
-    engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
+    engine = create_engine('mysql+mysqlconnector://root:Aa123456@localhost/car_info')
     try:
         df.to_sql(name='car_data', con=engine, if_exists='append', index=False) 
         logging.info("Data successfully saved to SQL.")
@@ -80,13 +80,17 @@ def main():
     logging.info(all_car_url)
     scraper = CarDataScraper() 
     all_car_data = []
-    try:
-        for url in all_car_url:
-            car_data = fetch_car_data(scraper, url)
+    count_url = len(all_car_url)
+    
+    for index, url in enumerate(all_car_url):
+        try:
+            car_data = fetch_car_data(scraper, url, index, count_url)
             all_car_data.append(car_data)
-    finally:
-        
-        scraper.close()     
+        except Exception as e:
+            logging.info(f'Number {index} url {url} error {e} ')
+            logging.info(f'find me')
+
+    scraper.close()     
            
     df1 = pd.DataFrame({
         'url': all_car_url,
@@ -94,6 +98,7 @@ def main():
         'views': all_car_views,
         'year': all_year
     })
+    
     df2 = pd.DataFrame(all_car_data)
     result = pd.concat([df1, df2], axis=1)
     
