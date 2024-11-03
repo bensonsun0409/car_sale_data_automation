@@ -201,7 +201,7 @@ def main(test_mode = True):
             logging.error(f"存入資料庫時發生錯誤: {str(e)}")
 
 def save_to_sql(df):
-    engine = create_engine('mysql+mysqlconnector://root:b03b02019@localhost/car_info')
+    engine = create_engine('mysql+mysqlconnector://root:Aa123456@localhost/car_info')
     try:
         df.to_sql(name='car_seller', con=engine, if_exists='append', index=False) 
         logging.info("Data successfully saved to SQL.")
