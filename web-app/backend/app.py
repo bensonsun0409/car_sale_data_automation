@@ -12,12 +12,16 @@ from mysql.connector import Error
 import os
 import logging
 import matplotlib.font_manager as fm
-app = Flask(__name__)
+
+import os
+from flask import Flask, send_from_directory
+
+app = Flask(__name__, static_folder='build')
 CORS(app)
 matplotlib.use('Agg')
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'b03b02019'
+app.config['MYSQL_PASSWORD'] = 'Aa123456'
 app.config['MYSQL_DB'] = 'car_info'
 app.config['MYSQL_CHARSET'] = 'utf8'
 
@@ -26,6 +30,14 @@ mysql = MySQL(app)
 
 font_path = os.path.join(os.path.dirname(__file__), 'fonts', 'NotoSansCJK-Regular.ttc')
 custom_font = fm.FontProperties(fname=font_path)
+# 服務前端靜態檔案
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 # 全局設置字體
 plt.rcParams['font.family'] = 'sans-serif'
@@ -459,7 +471,7 @@ def search():
             car_info.car_data
         WHERE 
             scrawldate >= %s AND scrawldate <= %s
-
+            and price is not null
 
            
 """,
@@ -505,7 +517,8 @@ def search():
 FROM 
     car_info.car_data
 WHERE 
-    scrawldate >= %s AND scrawldate <= %s"""
+    scrawldate >= %s AND scrawldate <= %s
+    """
 
     }
 
@@ -647,3 +660,5 @@ WHERE
         print(datas["avg_ask_price"]) 
         return jsonify({"success": True, "images": images, "tabledata":datas})
 
+if __name__ == '__main__':
+    app.run(port=3000)

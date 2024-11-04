@@ -34,7 +34,7 @@ const App = () => {
       setError(""); // 在每次搜索前清空错误消息
       setSearched(true); // 用户进行了搜索
       setLoading(true); // 搜索请求进行中
-      const response = await fetch("http://localhost:5000/search", {
+      const response = await fetch("http://localhost:3000/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
