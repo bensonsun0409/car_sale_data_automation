@@ -91,7 +91,6 @@ def main():
             logging.info(f'find me')
 
     scraper.close()     
-           
     df1 = pd.DataFrame({
         'url': all_car_url,
         'location': all_car_locations,
@@ -100,6 +99,7 @@ def main():
     })
     
     df2 = pd.DataFrame(all_car_data)
+    print(df2)
     result = pd.concat([df1, df2], axis=1)
     
     # save_to_csv(result)

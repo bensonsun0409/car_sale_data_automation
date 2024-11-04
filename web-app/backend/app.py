@@ -215,7 +215,7 @@ def total_onMarket_day_ralative(startDate, endDate, selected_brand, selected_mod
             SELECT car_id,
                 SUM(
                     CASE
-                        WHEN day_diff >= 3 THEN 3
+                        WHEN day_diff >= 2 THEN 2
                         ELSE day_diff
                     END
                 ) AS total_day_count

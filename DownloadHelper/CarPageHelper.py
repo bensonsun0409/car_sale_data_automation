@@ -96,7 +96,18 @@ class CarDataScraper:
 
             # 提取價格
             try:
-                car_data['price'] = self.driver.find_element(By.ID, 'price').text
+                car_data['price'] = None
+                myprice = None
+                temp_price = self.driver.find_element(By.ID, 'price').text
+                if temp_price == "電洽":
+                    car_data['price'] = None
+                else:
+                    match = re.search(r'(\d+)萬', temp_price)
+                    if match:
+                        myprice = int(match.group(1)) * 10000
+                    car_data['price'] = myprice
+                    logging.info(f'car_info {myprice}')
+
             except NoSuchElementException:
                 car_data['price'] = None
 

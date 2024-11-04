@@ -70,3 +70,12 @@ transaction_record int
 address varchar(45) 
 scrawldate date 
 location varchar(45)
+
+package網站指令
+1.在frontend 進行npm run build
+2.將生成的靜態資料夾front-app/build覆蓋
+3.後端輸入指令pip freeze > requirements.txt 確認沒有新增新的相關
+pyinstaller --onefile --add-data "front-app/build;build" --add-data "fonts;fonts"  app.py
+
+打包爬蟲程式
+pyinstaller --onefile --noconsole your_script.py(替代成要打包的程式)
