@@ -56,23 +56,46 @@ class CarDataScraper:
     
     def scrape_car_data(self, url):
         
+        car_data = {
+            
+            'brand': None,
+            'model': None,
+            'car_id': None,
+            'price': None,
+            'verify_tag': None,
+            'milage': None,
+            'ask_num': None,
+            '胎壓偵測': None,
+            '動態穩定系統': None,
+            '防盜系統': None,
+            'keyless免鑰系統': None,
+            '循跡系統': None,
+            '中控鎖': None,
+            '剎車輔助系統': None,
+            '兒童安全椅固定裝置': None,
+            'ABS防鎖死': None,
+            '安全氣囊': None,
+            '定速系統': None,
+            'LED頭燈': None,
+            '倒車顯影系統': None,
+            '衛星導航': None,
+            '多功能方向盤': None,
+            '倒車雷達': None,
+            '恆溫空調': None,
+            '自動停車系統': None,
+            '電動天窗': None,
+            '真皮/皮革座椅': None
+}           
         try:
             start_time = time.time()
             self.driver.get(url)
 
             # 等待頁面加載
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.ID, "main-box"))
+                EC.presence_of_element_located((By.CLASS_NAME, "main-content"))
             )
 
             car_data = {}
-            try:
-                todayDate = datetime.date.today()
-                car_data['scrawldate'] = todayDate
-                # logging.info(todayDate) 
-                # logging.info(car_data['scrawldate'])
-            except:
-                logging.info("Scrawl date error")
             try:
                 title = self.driver.find_element(By.CLASS_NAME, 'breadcrumb')
                 link = title.find_elements(By.CLASS_NAME,'NormalLink')
@@ -98,15 +121,13 @@ class CarDataScraper:
             try:
                 car_data['price'] = None
                 myprice = None
-                temp_price = self.driver.find_element(By.ID, 'price').text
-                if temp_price == "電洽":
-                    car_data['price'] = None
-                else:
-                    match = re.search(r'(\d+)萬', temp_price)
-                    if match:
-                        myprice = int(match.group(1)) * 10000
-                    car_data['price'] = myprice
-                    logging.info(f'car_info {myprice}')
+                temp_price = self.driver.find_element(By.ID,'price').text
+                if temp_price.endswith('萬'):  # 檢查是否包含 "萬"
+                    temp_price = temp_price[:-1]  # 去掉最後的 "萬"
+                    myprice = int(float(temp_price) * 10000) 
+                else :
+                    myprice = None
+                car_data['price'] = myprice
 
             except NoSuchElementException:
                 car_data['price'] = None
@@ -210,10 +231,10 @@ class CarDataScraper:
 
         except TimeoutException:
             logging.info(f"Timeout loading page: {url}")
-            return None
+            return car_data
         except Exception as e:
             logging.info(f"Error scraping data from {url}: {str(e)}")
-            return None
+            return car_data
 
     def close(self):
         self.driver.quit()

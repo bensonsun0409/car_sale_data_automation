@@ -1,0 +1,107 @@
+const FilterForm = ({ onSearch}) => {
+    const [selectedBrands, setSelectedBrands] = useState([]);
+    const [carBrand, setCarBrand] = useState("");
+    const [selectedModels, setSelectedModels] = useState([]);
+    const [carModel, setCarModel] = useState("");
+
+  
+  const handleBrandChange = async (selectedBrands) => {
+    setSelectedBrands(selectedBrands); // 更新已選擇的品牌
+    
+    if (selectedBrands.length === 0) {
+      setAvailableModels([]); // 如果沒有選擇品牌，清空車型列表
+      setSelectedModels([]); // 清空已選擇的車型
+      return;
+    }
+  
+    try {
+      const response = await fetch('http://localhost:3000/get-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          brands: selectedBrands
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const data = await response.json();
+      if (data.success) {
+        setAvailableModels(data.models);
+        // 清空已選擇的車型，因為品牌改變了
+        setSelectedModels([]);
+      } else {
+        console.error('Failed to fetch models:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching models:', error);
+    }
+  };
+  useEffect(() => {
+    setCarBrand(arrayToString2(selectedBrands));
+  }, [selectedBrands]);
+  const handleModelChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedModels(typeof value === "string" ? value.split(",") : value);
+  };
+  useEffect(() => {
+    setCarModel(arrayToString(selectedModels));
+  }, [selectedModels]);
+  const handleColorChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedColor(typeof value === "string" ? value.split(",") : value);
+  };
+  return{
+    <Grid item xs={12} sm={4} md={3}>
+    <FormControl sx={{ width: 250 }}>
+      <InputLabel id="brand-select-label">品牌</InputLabel>
+      <Select
+        labelId="brand-select-label"
+        id="brand-select"
+        multiple
+        value={selectedBrands}
+        onChange={handleBrandChange}
+        input={<OutlinedInput label="品牌" />}
+        renderValue={(selected) => selected.join(", ")}
+        MenuProps={MenuProps}
+      >
+        {Object.keys(brandsAndModels).map((brand) => (
+          <MenuItem key={brand} value={brand}>
+            <Checkbox checked={selectedBrands.indexOf(brand) > -1} />
+            <ListItemText primary={brand} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+    </Grid>
+    <Grid item xs={12} sm={4} md={3}>
+    <FormControl sx={{ width: 250 }}>
+      <InputLabel id="model-select-label">車型</InputLabel>
+      <Select
+        labelId="model-select-label"
+        id="model-select"
+        multiple
+        value={selectedModels}
+        onChange={handleModelChange}
+        input={<OutlinedInput label="車型" />}
+        renderValue={(selected) => selected.join(", ")}
+        MenuProps={MenuProps}
+      >
+        {getModels().map((model) => (
+          <MenuItem key={model} value={model}>
+            <Checkbox checked={selectedModels.indexOf(model) > -1} />
+            <ListItemText primary={model} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  }
+}

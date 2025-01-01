@@ -10,7 +10,7 @@ import logging
 class StringHelper:
 
     @staticmethod
-    def get_page_info(page, brand, model):
+    def get_page_info(page, scrawldate, brand, model):
         start_time = time.time()
         options = Options()
         # options.add_argument('--headless')
@@ -32,6 +32,7 @@ class StringHelper:
             car_locations = []
             car_url = []
             car_year = []
+            car_scrawldate = []
             
             for index, a_element in enumerate(a_elements, 1):
                 try:
@@ -49,35 +50,37 @@ class StringHelper:
                     car_locations.append(location.text)
                     car_url.append(href)
                     car_year.append(year)
+                    car_scrawldate.append(scrawldate)
                 except NoSuchElementException:
                     logging.info(f"Can't find some information at {index} ")
 
             end_time = time.time()
             download_time = end_time - start_time
             logging.info(f"Page {page} Download time: {download_time} seconds")
-            return car_url, car_locations, car_views, car_year
+            return car_url, car_locations, car_views, car_year, car_scrawldate
         except Exception as e:
             logging.info(f"Happen error: {str(e)}")
             return None
 
 
     @staticmethod
-    def scan_all_pages(brand=None, model=None):
+    def scan_all_pages(scrawldate=None, brand=None, model=None):
         page = 1
-        all_car_url, all_car_locations, all_car_views, all_year = [], [], [],[]
+        all_car_url, all_car_locations, all_car_views, all_year, all_car_scrawldate = [], [], [], [],[]
         start_time = time.time()
     
         while True:
             try:
-                result = StringHelper.get_page_info(page, brand, model)
+                result = StringHelper.get_page_info(page, scrawldate, brand, model)
                 if not result or not any(result):
                     logging.info(f"no more page, only scan {page - 1} pages")
                     break
-                car_url, car_locations, car_views, car_year = result
+                car_url, car_locations, car_views, car_year, car_scrawldate = result
                 all_car_url.extend(car_url)
                 all_car_locations.extend(car_locations)
                 all_car_views.extend(car_views)
                 all_year.extend(car_year)
+                all_car_scrawldate.extend(car_scrawldate)
                 page += 1
                 time.sleep(1)
             except Exception as e:
@@ -86,4 +89,4 @@ class StringHelper:
         end_time = time.time()
         logging.info(f'Total cost {end_time - start_time} second')
 
-        return all_car_url, all_car_locations, all_car_views, all_year
+        return all_car_url, all_car_locations, all_car_views, all_year, all_car_scrawldate

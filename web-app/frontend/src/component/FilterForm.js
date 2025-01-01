@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import TextField from "@mui/material/TextField"; // 添加这一行
@@ -21,15 +21,17 @@ import {
 } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import "../style/FilterForm.css";
-import axios from "axios";
+
 import {
   brandsAndModels,
   Colorlist,
   Equiplist,
   Locationlist,
 } from "./brandsAndModes";
+import axios from "axios";
 
-const FilterForm = ({ onSearch }) => {
+
+const FilterForm = ({ onSearch}) => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -42,6 +44,7 @@ const FilterForm = ({ onSearch }) => {
   const [color, setColor] = useState("");
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [carBrand, setCarBrand] = useState("");
+  const [availableModels, setAvailableModels] = useState([]); 
   const [selectedModels, setSelectedModels] = useState([]);
   const [carModel, setCarModel] = useState("");
   const [yearOptions, setYearOptions] = useState([]);
@@ -160,25 +163,52 @@ const FilterForm = ({ onSearch }) => {
     },
   };
 
-  const handleBrandChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedBrands(typeof value === "string" ? value.split(",") : value);
+  const handleBrandChange = async (event) => {
+    const selectedOptions = event.target.value;
+    setSelectedBrands(typeof selectedOptions === 'string' ? selectedOptions.split(',') : selectedOptions);
 
-    setSelectedModels([]);
+    if (selectedOptions.length === 0) {
+      setAvailableModels([]); // 如果沒有選擇品牌，清空車型列表
+      setSelectedModels([]);
+      return;
+    }
+
+    // 向後端發出請求，根據所選品牌獲取車型列表
+    try {
+      const response = await fetch('http://localhost:3000/get-models', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ brands: selectedOptions }),
+      });
+
+      if (!response.ok) throw new Error('Network response was not ok');
+
+      const data = await response.json();
+      if (data.success) {
+        setAvailableModels(data.models); // 設定車型列表
+        setSelectedModels([]);           // 清空已選車型
+      } else {
+        console.error('Failed to fetch models:', data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching models:', error);
+    }
   };
+
+  // 更新所選品牌字符串
   useEffect(() => {
-    setCarBrand(arrayToString2(selectedBrands));
+    setCarBrand(selectedBrands.join(", "));
   }, [selectedBrands]);
+
+  // 處理車型變更
   const handleModelChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedModels(typeof value === "string" ? value.split(",") : value);
+    const selectedOptions = event.target.value;
+    setSelectedModels(typeof selectedOptions === 'string' ? selectedOptions.split(',') : selectedOptions);
   };
+
+  // 更新所選車型字符串
   useEffect(() => {
-    setCarModel(arrayToString(selectedModels));
+    setCarModel(selectedModels.join(", "));
   }, [selectedModels]);
   const handleColorChange = (event) => {
     const {
@@ -329,6 +359,27 @@ const FilterForm = ({ onSearch }) => {
             labelId="year-select-label"
             id="year-select"
             multiple
+            value={selectedTypeYear}
+            onChange={handleSelectedTypeYear}
+            input={<OutlinedInput label="出廠年份" />}
+            renderValue={(selected) => selected.join(", ")}
+          >
+            {yearOptions.map((year) => (
+              <MenuItem key={year} value={year}>
+                <Checkbox checked={selectedTypeYear.indexOf(year) > -1} />
+                <ListItemText primary={year} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={4} md={3}>
+        <FormControl sx={{ width: 250 }}>
+          <InputLabel id="year-select-label">年式</InputLabel>
+          <Select
+            labelId="year-select-label"
+            id="year-select"
+            multiple
             value={selectedProductYear}
             onChange={handleSelectedProductYear}
             input={<OutlinedInput label="出廠年份" />}
@@ -343,27 +394,7 @@ const FilterForm = ({ onSearch }) => {
           </Select>
         </FormControl>
         </Grid>
-        <Grid item xs={12} sm={4} md={3}>
-        <FormControl sx={{ width: 250 }}>
-          <InputLabel id="year-select-label">年式</InputLabel>
-          <Select
-            labelId="year-select-label"
-            id="year-select"
-            multiple
-            value={selectedTypeYear}
-            onChange={handleSelectedTypeYear}
-            input={<OutlinedInput label="年式" />}
-            renderValue={(selected) => selected.join(", ")}
-          >
-            {yearOptions.map((year) => (
-              <MenuItem key={year} value={year}>
-                <Checkbox checked={selectedTypeYear.indexOf(year) > -1} />
-                <ListItemText primary={year} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        </Grid>
+
         <Grid item xs={12} sm={4} md={3}>
         <FormControl sx={{ width: 250 }}>
           <InputLabel id="brand-select-label">品牌</InputLabel>
@@ -399,7 +430,7 @@ const FilterForm = ({ onSearch }) => {
             renderValue={(selected) => selected.join(", ")}
             MenuProps={MenuProps}
           >
-            {getModels().map((model) => (
+          {availableModels.map((model) => (
               <MenuItem key={model} value={model}>
                 <Checkbox checked={selectedModels.indexOf(model) > -1} />
                 <ListItemText primary={model} />
